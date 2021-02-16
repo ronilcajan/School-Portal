@@ -1,0 +1,99 @@
+.dataTables_empty {
+    padding-top: 25px!important;
+    padding-bottom: 180px!important;
+    text-align: left!important;
+    color: #777;
+    font-size: 15px;
+    background: url('http://localhost/images/table-no-data.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 161px;
+}
+#myDatatables.table-borderless,
+#myDatatables.table-borderless tbody,
+#myDatatables.table-borderless tbody tr,
+#myDatatables.table-borderless tbody td,
+#myspecificDatatables.table-borderless,
+#myspecificDatatables.table-borderless tbody,
+#myspecificDatatables.table-borderless tbody tr,
+#myspecificDatatables.table-borderless tbody td {
+    border-style: none;
+}
+table.dataTable thead>tr>th {
+    color: #4e75ad;
+    background: #f6f8fa;
+    vertical-align: middle;
+    border: 1px solid;
+    border-color: #ebf5ff!important;
+    font-size: 14px;
+    padding-top: 15px;
+    padding-bottom:15px;
+}
+table.dataTable tfoot>tr>th {
+    color: #4e75ad;
+    background: #f6f8fa;
+    vertical-align: middle;
+    border: 1px solid;
+    border-color: #ebf5ff!important;
+    font-size: 13px;
+    padding-top: 10px;
+    padding-bottom:9px;
+}
+div.row-options {
+    margin-top: 5px;
+    padding: 2px 0 0;
+    position: relative;
+    left: -9999em;
+}
+
+table tr:hover td div.row-options{
+    position: static;
+}
+#deleteModal .modal-header{
+    background:linear-gradient(90deg, #f85032 0%,#e73827 100% );
+    color: white;
+}
+#edit-modal .modal-header,
+#create-modal .modal-header,
+#faculty .modal-header,
+#activity .modal-header,
+#edit-activity .modal-header,
+#notify-modal .modal-header{
+    background:linear-gradient(90deg, #457fca 0%,#5691c8 100% );
+    color: white;
+}
+.modal-header button,.modal-header h4{
+    color: white;
+}
+
+.dataTables_length select[name="myDatatables_length"],
+.dataTables_length select[name="user_table_length"], 
+.dataTables_length select[name="studentTable_length"],
+.dataTables_length select[name="gradeTable_length"]{
+    width: 50px;
+    height: 32px;
+    margin-right: 5px;
+    border-color: #06b9d4;
+    border-radius: 4px;
+}
+.dataTables_length select[name="myDatatables_length"] option, 
+.dataTables_length select[name="user_table_length"] option, 
+.dataTables_length select[name="studentTable_length"] option,
+.dataTables_length select[name="gradeTable_length"] option{
+    border-color: #06b9d4;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+.errors li{
+    list-style: none;
+    width: 100%;
+    text-align: left;
+}
+.errors ul{
+    padding-left: 0;
+    margin-bottom: 0;
+}
