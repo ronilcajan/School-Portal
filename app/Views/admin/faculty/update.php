@@ -19,13 +19,29 @@
             <?php endif; ?>
             <?php $facultySection = $sections->getRowArray(); ?>
             <div class="panel panel-info">
-                <div class="panel-heading">Create Faculty</div>
+                <div class="panel-heading">Edit Faculty Detials</div>
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body">
                         <form action="<?= site_url('admin/update-faculty') ?>" method="post">
                             <div class="form-body">
                                 <h3 class="box-title">Faculty Info</h3>
                                 <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select class="form-control" name="status">
+                                                <option value="">Select Status</option>
+                                                <?php if($faculty['status'] == 1):?>
+                                                    <option value="1" selected>Active</option>
+                                                    <option value="0">InActive</option>
+                                                <?php else: ?>
+                                                    <option value="1">Active</option>
+                                                    <option value="0" selected>InActive</option>
+                                                <?php endif ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -108,13 +124,14 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Email Address</label>
-                                            <input type="email" class="form-control" placeholder="Student ID" required value="<?= $faculty['email'] ?>" readonly>
+                                            <input type="email" class="form-control" placeholder="faculty ID" required value="<?= $faculty['email'] ?>" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Temporary Password</label>
-                                            <input type="password" name="pass" class="form-control" placeholder="Password" autocomplete="off">
+                                            <input type="password" id="conf-password" name="pass" class="form-control" placeholder="Password" autocomplete="off">
+                                            <span toggle="#conf-password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                         </div>
                                     </div>
                                 </div>

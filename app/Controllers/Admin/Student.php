@@ -14,7 +14,7 @@ class Student extends BaseController
 		$model = new StudentModel();
 
 		$data['students'] = $model
-								->select('*, students.id as id')
+								->select('*, students.id as id,students.status as status,students.updated_at as updated_at')
 								->join('student_section','students.id=student_section.student_id')
 								->join('section','section.id=student_section.section_id')
 								->findAll();
@@ -30,6 +30,7 @@ class Student extends BaseController
 		$section = new SectionModel();
 
 		$data['section'] = $section->where('status',1)->findAll();
+		$data['random_pass'] = $this->randomPassword();
 
  		$data['title'] = "Create Student";
 		return view('admin/student/create_student',$data);
@@ -43,7 +44,7 @@ class Student extends BaseController
 
 		$data['section'] = $section->where('status',1)->findAll();
 
-		$data['student'] = $student->select('*, students.id as id,student_section.section_id as section_id')
+		$data['student'] = $student->select('*,students.status as status, students.id as id,student_section.section_id as section_id')
 							->join('student_section','students.id=student_section.student_id')
 							->join('section','section.id=student_section.section_id')
 							->where('students.id', $id)->first();
@@ -75,9 +76,11 @@ class Student extends BaseController
 				'pass' => 'required',
 				'f_name' => 'required',
 				'f_phone' => 'required',
+				'f_email' => 'required',
 				'f_address' => 'required',
 				'm_name' => 'required',
 				'm_phone' => 'required',
+				'm_email' => 'required',
 				'm_address' => 'required',
 			];
 			$errors = [
@@ -108,6 +111,12 @@ class Student extends BaseController
                 ],
                 'm_address' => [
                     'required' => "Address is required!",
+                ],
+				'm_email' => [
+                    'required' => "Father's Email Address is required!",
+                ],
+				'f_email' => [
+                    'required' => "Mothers's Email Address is required!",
                 ],
 			];
 
@@ -142,9 +151,11 @@ class Student extends BaseController
 						'student_id' =>  $student_id,
 						'f_name' => $this->request->getVar('f_name'),
 						'f_phone' => $this->request->getVar('f_phone'),
+						'f_email' => $this->request->getVar('f_email'),
 						'f_address' => $this->request->getVar('f_address'),
 						'm_name' => $this->request->getVar('m_name'),
 						'm_phone' => $this->request->getVar('m_phone'),
+						'm_email' => $this->request->getVar('m_email'),
 						'm_address' => $this->request->getVar('m_address'),
 					];
 
@@ -198,10 +209,13 @@ class Student extends BaseController
 				'section_id' => 'required',
 				'f_name' => 'required',
 				'f_phone' => 'required',
+				'f_email' => 'required',
 				'f_address' => 'required',
 				'm_name' => 'required',
 				'm_phone' => 'required',
+				'm_email' => 'required',
 				'm_address' => 'required',
+				'status' => 'required',
 			];
 			$errors = [
 				'student_id' => [
@@ -232,6 +246,15 @@ class Student extends BaseController
                 'm_address' => [
                     'required' => "Address is required!",
                 ],
+				'status' => [
+                    'required' => "Please select student status.",
+                ],
+				'm_email' => [
+                    'required' => "Father's Email Address is required!",
+                ],
+				'f_email' => [
+                    'required' => "Mothers's Email Address is required!",
+                ],
 			];
 
 			if (!$this->validate($rules,$errors)) {
@@ -256,6 +279,7 @@ class Student extends BaseController
 					'city' => $this->request->getVar('city'),
 					'province' => $this->request->getVar('province'),
 					'postal' => $this->request->getVar('postal'),
+					'status' => $this->request->getVar('status'),
 					'updated_at' => date('y-n-j G:i:s')
 				];
 				
@@ -268,9 +292,11 @@ class Student extends BaseController
 						'student_id' => $id,
 						'f_name' => $this->request->getVar('f_name'),
 						'f_phone' => $this->request->getVar('f_phone'),
+						'f_email' => $this->request->getVar('f_email'),
 						'f_address' => $this->request->getVar('f_address'),
 						'm_name' => $this->request->getVar('m_name'),
 						'm_phone' => $this->request->getVar('m_phone'),
+						'm_email' => $this->request->getVar('m_email'),
 						'm_address' => $this->request->getVar('m_address'),
 						'updated_at' => date('y-n-j G:i:s')
 					];
@@ -351,6 +377,17 @@ class Student extends BaseController
 
 		$data['title'] = "Student";
 		return view('admin/student/student_profile',$data);
+	}
+
+	public function randomPassword() {
+		$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+		$pass = array(); //remember to declare $pass as an array
+		$alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+		for ($i = 0; $i < 8; $i++) {
+			$n = rand(0, $alphaLength);
+			$pass[] = $alphabet[$n];
+		}
+		return implode($pass); //turn the array into a string
 	}
 
 	//--------------------------------------------------------------------

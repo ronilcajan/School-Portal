@@ -5,6 +5,7 @@ use App\Models\StudentModel;
 use App\Models\ActivityModel;
 use App\Models\FacultyModel;
 use App\Models\ClearanceModel;
+use App\Models\SectionModel;
 
 class Student extends BaseController
 {
@@ -93,6 +94,7 @@ class Student extends BaseController
 	public function grades()
 	{
 		$model = new StudentModel();
+		$section = new SectionModel();
 		$id = session()->get('id_number');
 
 		$data['grades'] = $model
@@ -100,6 +102,8 @@ class Student extends BaseController
 								->join('subjects','subjects.id=grades.subject_id')
 								->where('students.student_ID',$id)
 								->findAll();
+
+		$data['school_year'] = $section->select('school_year')->findAll();
 
 		$data['title'] = "My Grades";
 		return view('student/grades',$data);
@@ -183,5 +187,5 @@ class Student extends BaseController
 	}
 
 	//--------------------------------------------------------------------
-
+	
 }

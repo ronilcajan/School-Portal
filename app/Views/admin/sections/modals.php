@@ -18,7 +18,7 @@
                             <div class="form-group">
                                 <label class="control-label">Section Year</label>
                                 <select class="form-control" name="year">
-                                    <option selected disabled>Select</option>
+                                    <option selected disabled>Select Section Year</option>
                                     <option value="7">Grade 7</option>
                                     <option value="8">Grade 8</option>
                                     <option value="9">Grade 9</option>
@@ -29,6 +29,18 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">School Year</label>
+                        <select class="form-control" name="school_year">
+                            <option selected disabled>Select School Year</option>
+                        <?php
+                            $date2=date('Y', strtotime('+1 Years'));
+                            for($i=date('Y'); $i<$date2+5;$i++){
+                                echo '<option>'.$i.'-'.($i+1).'</option>';
+                            }
+                        ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="description" class="control-label">Description:</label>

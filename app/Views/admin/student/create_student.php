@@ -29,7 +29,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Student ID</label>
-                                            <input type="text" name="student_id" class="form-control" onkeyup="studentID(this)" placeholder="Student ID" required value="<?= set_value('student_id') ?>">
+                                            <input type="text" name="student_id" class="form-control" onkeyup="studentID(this)" placeholder="Student ID" required value="<?= old('student_id') ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -50,13 +50,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">First Name</label>
-                                            <input type="text" id="firstName" name="firstname" class="form-control" placeholder="Firstname" required value="<?= set_value('firstname') ?>">
+                                            <input type="text" id="firstName" name="firstname" class="form-control" placeholder="Firstname" required value="<?= old('firstname') ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Last Name</label>
-                                            <input type="text" id="lastName" name="lastname" class="form-control" placeholder="Lastname" required value="<?= set_value('lastname') ?>">
+                                            <input type="text" id="lastName" name="lastname" class="form-control" placeholder="Lastname" required value="<?= old('lastname') ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -65,7 +65,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Gender</label>
-                                            <select class="form-control" name="gender" required value="<?= set_value('gender') ?>">
+                                            <select class="form-control" name="gender" required value="<?= old('gender') ?>">
                                                 <option value="M">Male</option>
                                                 <option value="F">Female</option>
                                             </select></div>
@@ -74,7 +74,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Date of Birth</label>
-                                            <input type="text" class="form-control mydatepicker" name="birthdate" placeholder="dd/mm/yyyy" required value="<?= set_value('birthdate') ?>"> </div>
+                                            <input type="text" class="form-control mydatepicker" name="birthdate" placeholder="dd/mm/yyyy" required value="<?= old('birthdate') ?>"> </div>
                                     </div>
                                     <!--/span-->
                                 </div>
@@ -82,13 +82,13 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Phone</label>
-                                            <input type="text" id="Phone" name="phone" class="form-control" placeholder="Phone" required value="<?= set_value('phone') ?>">
+                                            <input type="text" id="Phone" name="phone" class="form-control" placeholder="Phone" required value="<?= old('phone') ?>">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Email Address</label>
-                                            <input type="email" id="Email" name="email" class="form-control" placeholder="Email" required value="<?= set_value('email') ?>">
+                                            <input type="email" id="Email" name="email" class="form-control" placeholder="Email" required value="<?= old('email') ?>">
                                         </div>
                                     </div>
                                 </div>
@@ -99,25 +99,25 @@
                                     <div class="col-md-12 ">
                                         <div class="form-group">
                                             <label>Street</label>
-                                            <input type="text" name="street" class="form-control" required value="<?= set_value('street') ?>"> </div>
+                                            <input type="text" name="street" class="form-control" required value="<?= old('street') ?>"> </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>City/Municipality</label>
-                                            <input type="text" name="city" class="form-control" required value="<?= set_value('city') ?>"> </div>
+                                            <input type="text" name="city" class="form-control" required value="<?= old('city') ?>"> </div>
                                     </div>
                                     <!--/span-->
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Province</label>
-                                            <input type="text" name="province" class="form-control" required value="<?= set_value('province') ?>"> </div>
+                                            <input type="text" name="province" class="form-control" required value="<?= old('province') ?>"> </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Postal Code</label>
-                                            <input type="text" name="postal" class="form-control" required value="<?= set_value('postal') ?>"> </div>
+                                            <input type="text" name="postal" class="form-control" required value="<?= old('postal') ?>"> </div>
                                     </div>
                                     <!--/span-->
                                 </div>
@@ -125,42 +125,52 @@
                                 <h3 class="box-title m-t-40">Family Background</h3>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Father's name</label>
-                                            <input type="text" name="f_name" class="form-control" required value="<?= set_value('f_name') ?>"> </div>
+                                            <input type="text" name="f_name" class="form-control" required value="<?= old('f_name') ?>"> </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Phone</label>
-                                            <input type="text" name="f_phone" class="form-control" required value="<?= set_value('f_phone') ?>"> </div>
+                                            <input type="text" name="f_phone" class="form-control" required value="<?= old('f_phone') ?>"> </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Email Address</label>
+                                            <input type="email" name="f_email" class="form-control" required value="<?= old('f_email') ?>"> </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <textarea class="form-control" required row="5" name='f_address'></textarea>
+                                            <textarea class="form-control" required row="5" name='f_address'><?= old('f_address') ?></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Mother's name</label>
-                                            <input type="text" name="m_name" class="form-control" required value="<?= set_value('m_name') ?>"> </div>
+                                            <input type="text" name="m_name" class="form-control" required value="<?= old('m_name') ?>"> </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Phone</label>
-                                            <input type="text" name="m_phone" class="form-control" required value="<?= set_value('m_phone') ?>"> </div>
+                                            <input type="text" name="m_phone" class="form-control" required value="<?= old('m_phone') ?>"> </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Email Address</label>
+                                            <input type="email" name="m_email" class="form-control" required value="<?= old('m_email') ?>"> </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <textarea class="form-control" required row="5" name='m_address'></textarea>
+                                            <textarea class="form-control" required row="5" name='m_address'><?= old('m_address') ?></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -171,13 +181,14 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Student ID:</label>
-                                            <input type="text" id="student_id" class="form-control" placeholder="Student ID" required value="<?= set_value('student_id') ?>" readonly>
+                                            <input type="text" id="student_id" class="form-control" placeholder="Student ID" required value="<?= old('student_id') ?>" readonly>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Temporary Password</label>
-                                            <input type="password" name="pass" class="form-control" placeholder="Password" autocomplete="off" required>
+                                            <input type="password" name="pass" class="form-control" value="<?= $random_pass ?>" id="conf-password" placeholder="Password" autocomplete="off" required>
+                                            <span toggle="#conf-password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                         </div>
                                     </div>
                                 </div>

@@ -94,6 +94,7 @@ class Sections extends BaseController
 				'name' => 'trim|required|is_unique[section.section_name,id,'.$id.']',
 				'year' => 'required',
 				'description' => 'required',
+				'subjects' => 'required',
 			];
 			$errors = [
 				'name' => [
@@ -106,6 +107,10 @@ class Sections extends BaseController
 				],
 				'description' => [
 					'required' => 'Section description is required!',
+					
+				],
+				'subjects' => [
+					'required' => 'Subjects are required!',
 					
 				],
 			];
@@ -189,7 +194,7 @@ class Sections extends BaseController
 		$model = new StudentModel();
 
 		$data['students'] = $model
-								->select('*, students.id as id')
+								->select('*,students.status as status, students.updated_at as updated_at, students.id as id')
 								->join('student_section','students.id=student_section.student_id')
 								->join('section','section.id=student_section.section_id')
 								->where('section.id',$id)
@@ -200,4 +205,4 @@ class Sections extends BaseController
 	}
 	//--------------------------------------------------------------------
 
-}
+} 

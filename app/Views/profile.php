@@ -176,6 +176,11 @@
                                     <input type="text" name="f_phone" required value="<?= empty($family['f_phone']) ? null : $family['f_phone'] ?>" class="form-control form-control-line"> </div>
                             </div>
                             <div class="form-group">
+                                <label class="col-md-12">Email Address</label>
+                                <div class="col-md-12">
+                                    <input type="email" name="f_email" required value="<?= empty($family['f_email']) ? null : $family['f_email'] ?>" class="form-control form-control-line"> </div>
+                            </div>
+                            <div class="form-group">
                                 <label class="col-md-12">Address</label>
                                 <div class="col-md-12">
                                     <textarea class="form-control" required row="5" name='f_address'><?= empty($family['f_address']) ? null : $family['f_address'] ?></textarea>
@@ -191,6 +196,11 @@
                                 <label class="col-md-12">Phone No.</label>
                                 <div class="col-md-12">
                                     <input type="text" name="m_phone" required value="<?= empty($family['m_phone']) ? null : $family['m_phone'] ?>" class="form-control form-control-line"> </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-12">Email Address</label>
+                                <div class="col-md-12">
+                                    <input type="email" name="m_email" required value="<?= empty($family['m_email']) ? null : $family['m_email'] ?>" class="form-control form-control-line"> </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-12">Address</label>

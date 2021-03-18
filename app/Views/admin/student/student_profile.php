@@ -55,20 +55,26 @@
                     </div>
                     <hr>
                     <div class="row text-center m-t-10">
-                        <div class="col-md-6 b-r"><strong>Father's Name</strong>
+                        <div class="col-md-4 b-r"><strong>Father's Name</strong>
                             <p><?= empty($family[0]['f_name']) ? 'Father' : $family[0]['f_name'] ?></p>
                         </div>
-                        <div class="col-md-6"><strong>Phone</strong>
+                        <div class="col-md-4 b-r"><strong>Phone</strong>
                             <p><a href="tel:<?= empty($family[0]['f_phone']) ? '+123 456 789' : $family[0]['f_phone'] ?>" ><?= empty($family[0]['f_phone']) ? '+123 456 789' : $family[0]['f_phone'] ?></a></p>
+                        </div>
+                        <div class="col-md-4"><strong>Email Address</strong>
+                            <p><a href="tel:<?= empty($family[0]['f_email']) ? 'email' : $family[0]['f_email'] ?>" ><?= empty($family[0]['f_email']) ? 'email' : $family[0]['f_email'] ?></a></p>
                         </div>
                     </div>
                     <hr>
                     <div class="row text-center m-t-10">
-                        <div class="col-md-6 b-r"><strong>Mother's Name</strong>
+                        <div class="col-md-4 b-r"><strong>Mother's Name</strong>
                             <p><?= empty($family[0]['m_name']) ? 'Mother' : $family[0]['m_name'] ?></p>
                         </div>
-                        <div class="col-md-6"><strong>Phone</strong>
+                        <div class="col-md-4 b-r"><strong>Phone</strong>
                             <p><a href="tel:<?= empty($family[0]['m_phone']) ? '+123 456 789' : $family[0]['m_phone'] ?>" ><?= empty($family[0]['m_phone']) ? '+123 456 789' : $family[0]['m_phone'] ?></a></p>
+                        </div>
+                        <div class="col-md-4"><strong>Email Address</strong>
+                            <p><a href="tel:<?= empty($family[0]['m_email']) ? 'email' : $family[0]['m_email'] ?>" ><?= empty($family[0]['m_email']) ? 'email' : $family[0]['m_email'] ?></a></p>
                         </div>
                     </div>
                     <div class="row text-center m-t-10">

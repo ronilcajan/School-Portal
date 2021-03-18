@@ -79,6 +79,7 @@
                                 <th>Year & Section</th>
                                 <th>Description</th>
                                 <th>Status</th>
+                                <th>School Year</th>
                                 <th>Date Created</th>
                                 <th>Date Updated</th>
                                 <th>Action</th>
@@ -91,6 +92,7 @@
                                 <td><a href="<?= site_url('admin/sections/specificSection/'.$row['id'].'/'.$row['section_year'].'-'.$row['section_name']) ?>" >Grade <?= $row['section_year'].' - '.$row['section_name'] ?></a></td>
                                 <td><?= $row['description'] ?></td>
                                 <td><?= $row['status'] == 1 ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>' ?></td>
+                                <td><?= $row['school_year'] ?></td>
                                 <td><i class="fa fa-clock-o"></i> <?= date('n/j/Y g:i A', strtotime($row['created_at'])) ?></td>
                                 <td><?= !empty($row['updated_at']) ? '<i class="fa fa-clock-o"></i> '. date('n/j/Y g:i A', strtotime($row['updated_at'])) :  null ?></td>
                                 <td>

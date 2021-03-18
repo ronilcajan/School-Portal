@@ -13,13 +13,26 @@ $(document).ready(function(){
     $(".checkbox #checkAll").click(function () {
         $("table input:checkbox").not(this).prop("checked", this.checked);
     });
-    $("#activityTable").DataTable();
-    $("#actTable").DataTable();
-    $("#subsTable").DataTable();
-    $("#myDatatables").DataTable();
-    $("#gradeTable").DataTable();
-    $("#act_table").DataTable();
+    $("#activityTable").DataTable({
+        responsive: true
+    } );
+    $("#actTable").DataTable({
+        responsive: true
+    } );
+    $("#subsTable").DataTable({
+        responsive: true
+    } );
+    $("#myDatatables").DataTable({
+        responsive: true
+    } );
+    $("#gradeTable").DataTable({
+        responsive: true
+    } );
+    $("#act_table").DataTable({
+        responsive: true
+    } );
     $("#user_table").DataTable({
+        responsive: true,
         "order": [],
         'columnDefs': [{
             "targets": [0],
@@ -27,6 +40,7 @@ $(document).ready(function(){
         }]
     });
     $("#studentTable").DataTable({
+        responsive: true,
         "order": [],
         'columnDefs': [{
             "targets": [0],

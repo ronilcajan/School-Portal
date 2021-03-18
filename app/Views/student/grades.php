@@ -10,8 +10,20 @@
         </div>
     <?php endif; ?>
     <?= $this->include('templates/breadcrumbs') ?>
-    <div class="white-box">
-        <h3 class="box-title m-b-20">My Grades</h3>
+    <div class="white-box user-table">
+    <div class="row">
+        <div class="col-sm-6">
+            <h3 class="box-title m-b-20">My Grades</h3>
+        </div>
+        <div class="col-sm-6">
+            <select class="custom-select">
+                <option selected>Sort the list by School Year</option>
+                <?php foreach($school_year as $row): ?>
+                    <option value="<?= $row['school_year'] ?>"><?= $row['school_year'] ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+        </div>
         <div class="table-responsive">
             <table id="studentTable" class="display table-borderless" cellspacing="0" width="100%">
                 <thead>
@@ -44,4 +56,5 @@
         </div>
     </div>
 </div>
+
 <?= $this->endSection() ?>

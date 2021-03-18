@@ -56,7 +56,7 @@ class Profile extends BaseController
                     'lastname' => 'required',
                     'email' => 'required|is_unique[faculty.email,id,'.$id.']|valid_email',
                     'gender' => 'required',
-                    'birthday' => 'required',
+                    'birthday' => 'required|validateFacultyBirthyear[birthday]',
                     'phone' => 'required',
                     'street' => 'required',
                     'city' => 'required',
@@ -68,7 +68,10 @@ class Profile extends BaseController
             $errors = [
                 'email' => [
                     'is_unique' => 'Email is already used, please enter a different email address!'
-                    ]
+                ],
+                'birthdate' => [
+					'validateFacultyBirthyear' => 'Faculty birthyear must below 2000!'
+				]
                 ];
 
             if (!$this->validate($rules,$errors)) {
@@ -274,11 +277,12 @@ class Profile extends BaseController
             $rules = [
                 'f_name' => 'required',
                 'f_phone' => 'required',
+                'f_email' => 'required',
                 'f_address' => 'required',
                 'm_name' => 'required',
                 'm_phone' => 'required',
+                'm_email' => 'required',
                 'm_address' => 'required',
-                'f_name' => 'required',
 
 			];
 
@@ -292,6 +296,9 @@ class Profile extends BaseController
                 'f_address' => [
                     'required' => "Address is required!",
                 ],
+                'f_email' => [
+                    'required' => "Email addresss is required!",
+                ],
                 'm_name' => [
                     'required' => "Mothers's name is required!",
                 ],
@@ -300,6 +307,9 @@ class Profile extends BaseController
                 ],
                 'm_address' => [
                     'required' => "Address is required!",
+                ],
+                'm_email' => [
+                    'required' => "Email addresss is required!",
                 ],
             ];
 
@@ -316,9 +326,11 @@ class Profile extends BaseController
                     'student_id' => $this->request->getVar('studID'),
                     'f_name' => $this->request->getVar('f_name'),
                     'f_phone' => $this->request->getVar('f_phone'),
+                    'f_email' => $this->request->getVar('f_email'),
                     'f_address' => $this->request->getVar('f_address'),
                     'm_name' => $this->request->getVar('m_name'),
                     'm_phone' => $this->request->getVar('m_phone'),
+                    'm_email' => $this->request->getVar('m_email'),
                     'm_address' => $this->request->getVar('m_address'),
                     'updated_at' => date('y-n-j G:i:s')
                 ];

@@ -99,7 +99,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Temporary Password</label>
-                                            <input type="password" name="pass" class="form-control" placeholder="Password" autocomplete="off" required>
+                                            <input type="password" name="pass" class="form-control" value="<?= $random_pass ?>" id="conf-password" placeholder="Password" autocomplete="off" required>
+                                            <span toggle="#conf-password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                         </div>
                                     </div>
                                 </div>

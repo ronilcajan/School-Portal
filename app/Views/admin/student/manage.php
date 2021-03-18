@@ -103,8 +103,8 @@
                                 <td><?= !empty($row['updated_at']) ? '<i class="fa fa-clock-o"></i> '. date('n/j/Y g:i A', strtotime($row['updated_at'])) :  null ?></td>
                                 <td>
                                     <a href="<?= site_url('admin/student/studentProfile/'.$row['id']) ?>" class="text-primary"><small>View</small></a> | 
-                                    <a href="<?= site_url('admin/student/edit/'.$row['id']) ?>" class="text-info"><small>Edit</small></a> | 
-                                    <a href="<?= site_url('admin/student/delete/'.$row['id']) ?>" class="text-danger"><small>Delete</small></a>
+                                    <a href="<?= site_url('admin/student/edit/'.$row['id']) ?>" class="text-info"><small>Edit</small></a> 
+                                    <!-- <a href="<?= site_url('admin/student/delete/'.$row['id']) ?>" class="text-danger"><small>Delete</small></a> -->
                                 </td>
                             </tr>
                         <?php $i++; endforeach ?>

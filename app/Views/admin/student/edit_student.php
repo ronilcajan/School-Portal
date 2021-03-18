@@ -18,13 +18,29 @@
                 </div>
             <?php endif; ?>
             <div class="panel panel-info">
-                <div class="panel-heading">Create Student</div>
+                <div class="panel-heading">Edit Student Info</div>
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body">
                         <form action="<?= site_url('admin/editStudent') ?>" method="post">
                             <div class="form-body">
                                 <h3 class="box-title">Student Info</h3>
                                 <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <select class="form-control" name="status">
+                                                <option value="">Select Status</option>
+                                                <?php if($student['status'] == 1):?>
+                                                    <option value="1" selected>Active</option>
+                                                    <option value="0">InActive</option>
+                                                <?php else: ?>
+                                                    <option value="1">Active</option>
+                                                    <option value="0" selected>InActive</option>
+                                                <?php endif ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -128,15 +144,20 @@
                                 <h3 class="box-title m-t-40">Family Background</h3>
                                 <hr>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Father's name</label>
                                             <input type="text" name="f_name" class="form-control" required value="<?= $family['f_name'] ?>"> </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Phone</label>
                                             <input type="text" name="f_phone" class="form-control" required value="<?= $family['f_phone'] ?>"> </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Email Address</label>
+                                            <input type="email" name="f_email" class="form-control" required value="<?= $family['f_email'] ?>"> </div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -148,15 +169,20 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Mother's name</label>
                                             <input type="text" name="m_name" class="form-control" required value="<?= $family['m_name'] ?>"> </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Phone</label>
                                             <input type="text" name="m_phone" class="form-control" required value="<?= $family['m_phone'] ?>"></div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Email Address</label>
+                                            <input type="email" name="m_email" class="form-control" required value="<?= $family['m_email'] ?>"></div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -181,7 +207,8 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label class="control-label">Temporary Password</label>
-                                            <input type="password" name="pass" class="form-control" placeholder="Password" autocomplete="off">
+                                            <input type="password" name="pass" id="conf-password" class="form-control" placeholder="Password" autocomplete="off">
+                                            <span toggle="#conf-password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
                                         </div>
                                     </div>
                                 </div>

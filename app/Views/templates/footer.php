@@ -63,6 +63,7 @@
 <script src="<?= site_url() ?>/plugins/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.min.js"></script>
 <script src="<?= site_url() ?>/plugins/components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js" type="text/javascript"></script>
 
+<script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.min.js"></script>
 <script>
         jQuery(document).ready(function() {
             // Switchery

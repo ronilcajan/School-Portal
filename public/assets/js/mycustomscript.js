@@ -1,3 +1,13 @@
+$(".toggle-password").click(function() {
+    $(this).toggleClass("fa-eye fa-eye-slash");
+    var input = $($(this).attr("toggle"));
+    if (input.attr("type") == "password") {
+      input.attr("type", "text");
+    } else {
+      input.attr("type", "password");
+    }
+});
+
 function getSubject(that){  // get the subject when selecting an attorney from create modal clients
     var id = $(that).attr('data-id');
     $.ajax({
@@ -53,7 +63,7 @@ function selectSection(that){  // get the sections when selecting an attorney fr
         success: function(response) {
             console.log(response);
             $.each(response.msg, function( index, value ) {
-                $('#group_section_id').append('<option value="'+value.id+'">Grade '+value.section_year+' - '+value.section_name+'</option>');
+                $('#group_section_id').html('<option value="'+value.id+'">Grade '+value.section_year+' - '+value.section_name+'</option>');
             });
         }
     });
@@ -141,7 +151,9 @@ function getFaculty(that){
         success: function(response) {
             if(response.success === true){
                 console.log(response);
-                $('#profile').attr("src", BASE_URL+"uploads/"+response.img);
+                if(response.img){
+                    $('#profile').attr("src", BASE_URL+"uploads/"+response.img);
+                }
                 $('#name').text(response.name);
                 $('#phone').text(response.phone);
                 $('#email').text(response.email);

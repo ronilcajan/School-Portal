@@ -43,11 +43,11 @@
                     </div>
                     <div class="form-group">
                         <label class="control-label">Date Assign</label>
-                        <input type="text" name="date_assgin" class="form-control mydatepicker" placeholder="Firstname" required value="<?= set_value('firstname') ?>">
+                        <input type="text" name="date_assgin" class="form-control mydatepicker" readonly required value="<?= set_value('firstname') ?>">
                     </div>
                     <div class="form-group">
                         <label class="control-label">Deadline</label>
-                        <input type="text" name="deadline" class="form-control mydatepicker" placeholder="Firstname" required value="<?= set_value('firstname') ?>">
+                        <input type="text" name="deadline" class="form-control mydatepicker" readonly required value="<?= set_value('firstname') ?>">
                     </div>
                     <div class="form-actions ">
                         <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Assign</button>
@@ -93,5 +93,5 @@
     </div>
     
 </div> 
-<?= $this->include('faculty/modal') ?>
+<?= $this->include('faculty/create_modal') ?>
 <?= $this->endSection() ?>

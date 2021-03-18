@@ -561,6 +561,12 @@ class Faculty extends BaseController
 				$file = $this->request->getFile('file');
 				$id = session()->get('id');
 
+				$dtls = [
+					'title' => $this->request->getVar('activity'),
+					'description' => $this->request->getVar('description'),
+					'faculty_id' => $id
+				];
+				
 				if(!empty($file)){
 					if($file->isValid()){
 						$newfileName = $file->getRandomName();
@@ -575,12 +581,7 @@ class Faculty extends BaseController
 							];
 						}
 					}
-				}else{
-					$dtls = [
-						'title' => $this->request->getVar('activity'),
-						'description' => $this->request->getVar('description'),
-						'faculty_id' => $id
-					];
+
 				}
 
                 $insert = $model->save($dtls);

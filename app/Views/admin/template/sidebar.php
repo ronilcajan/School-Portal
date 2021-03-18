@@ -30,26 +30,36 @@
                     <a class="waves-effect <?= strpos(uri_string(),'dashboard') || strpos(uri_string(),'my-profile') || strpos(uri_string(),'register') ? 'active' : null ?>" href="<?= site_url('admin/dashboard') ?>" aria-expanded="false"><i class="icon-screen-desktop fa-fw"></i> <span class="hide-menu"> Dashboard </span></a>
                 </li>
                 <li>
-                    <a class="waves-effect  <?= strpos(uri_string(),'student') ? 'active' : null ?>" href="<?= site_url('admin/students') ?>" aria-expanded="false"><i class="fa fa-user fa-fw"></i> <span class="hide-menu"> Student </span></a>
+                    <a class="waves-effect <?= strpos(uri_string(),'student') || strpos(uri_string(),'subject') || strpos(uri_string(),'section')  ? 'active' : null ?>" href="javascript:void(0);" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <span class="hide-menu"> Students </span></a>
+                    <ul aria-expanded="false" class="collapse">
+                        <li> <a href="<?= site_url('admin/students') ?>"><i class="fa fa-user"></i> View Students</a> </li>
+                        <li> <a href="<?= site_url('admin/section') ?>"><i class="fa fa-users"></i> Year & Section</a> </li>
+                        <li> <a href="<?= site_url('admin/subject') ?>"><i class="fa fa-book"></i> Subjects</a> </li>
+                    </ul>
                 </li>
+                <!-- <li>
+                    <a class="waves-effect  <?= strpos(uri_string(),'student') ? 'active' : null ?>" href="<?= site_url('admin/students') ?>" aria-expanded="false"><i class="fa fa-user fa-fw"></i> <span class="hide-menu"> Student </span></a>
+                </li> -->
                 <li>
                     <a class="waves-effect  <?= strpos(uri_string(),'faculty') ? 'active' : null ?>" href="<?= site_url('admin/faculty') ?>" aria-expanded="false"><i class="fa fa-briefcase fa-fw"></i> <span class="hide-menu"> Faculty </span></a>
                 </li>
-                <li>
+                <!-- <li>
                     <a class="waves-effect  <?= strpos(uri_string(),'section') ? 'active' : null ?>" href="<?= site_url('admin/section') ?>" aria-expanded="false"><i class="fa fa-users fa-fw"></i> <span class="hide-menu"> Year & Section </span></a>
                 </li>
                 <li>
                     <a class="waves-effect  <?= strpos(uri_string(),'subject') ? 'active' : null ?>" href="<?= site_url('admin/subject') ?>" aria-expanded="false"><i class="fa fa-book fa-fw"></i> <span class="hide-menu"> Subjects </span></a>
-                </li>
+                </li> -->
                 <li>
                     <a class="waves-effect  <?= strpos(uri_string(),'activity') ? 'active' : null ?>" href="<?= site_url('admin/activity') ?>" aria-expanded="false"><i class="fa fa-list-alt fa-fw"></i> <span class="hide-menu"> Activities </span></a>
                 </li>
                 <li>
+                <!-- <li>
                     <a class="waves-effect  <?= strpos(uri_string(),'grades') ? 'active' : null ?>" href="<?= site_url('admin/grades') ?>" aria-expanded="false"><i class="icon-badge fa-fw"></i> <span class="hide-menu"> Grades </span></a>
-                </li>
-                <li>
+                </li> -->
+                <!-- <li>
                     <a class="waves-effect  <?= strpos(uri_string(),'clearance') ? 'active' : null ?>" href="<?= site_url('admin/clearance') ?>" aria-expanded="false"><i class="fa fa-file fa-fw"></i> <span class="hide-menu"> Clearance </span></a>
-                </li>
+                </li> -->
             </ul>
         </nav>
     </div>

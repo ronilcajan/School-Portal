@@ -12,7 +12,7 @@
     <?= $this->include('templates/breadcrumbs') ?>
     <div class="col-md-12">
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="white-box ecom-stat-widget">
                     <div class="row">
                         <div class="col-xs-6">
@@ -25,7 +25,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="white-box ecom-stat-widget">
                     <div class="row">
                         <div class="col-xs-6">
@@ -38,7 +38,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <!-- <div class="col-md-4">
                 <div class="white-box ecom-stat-widget">
                     <div class="row">
                         <div class="col-xs-6">
@@ -50,27 +50,13 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <div class="white-box user-table">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <h4 class="box-title">My Activities</h4>
-                        </div>
-                        <div class="col-sm-6">
-                            <select class="custom-select">
-                                <option selected>Sort the list by</option>
-                                <option value="1">Product</option>
-                                <option value="2">Customer</option>
-                                <option value="3">Location</option>
-                                <option value="4">Quantity</option>
-                                <option value="5">Status</option>
-                            </select>
-                        </div>
-                    </div>
+                <div class="white-box">
+                    <h4 class="box-title">My Activities</h4>
                     <div class="table-responsive">
                         <table id="activityTable" class="display table-borderless" cellspacing="0" width="100%">
                             <thead>
@@ -82,7 +68,6 @@
                                     <th>Deadline</th>
                                     <th>Files</th>
                                     <th>Status</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <?php $db = db_connect(); ?>
@@ -100,13 +85,6 @@
                                             <?php $id=$row['actID']; $stats = $db->query("SELECT * FROM activity_status WHERE student_id=$user_id AND activity_id=$id"); 
                                             $status = $stats->getResultArray(); ?>
                                             <?= empty($status[0]['status']) ? 'To do' : '<span class="label label-info">'.ucwords($status[0]['status']).'</span>' ?>
-                                        </td>
-                                        <td>
-                                            <select class="custom-select" data-acc="<?= $row['actID'] ?>" onchange="activityStatus(this)">
-                                                <option disbled selected>Select</option>
-                                                <option value="done">Done</option>
-                                                <option value="undone">Not Done</option>
-                                            </select>
                                         </td>
                                     </tr>
                                 <?php $no++; endforeach ?>

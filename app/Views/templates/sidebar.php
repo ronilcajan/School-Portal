@@ -48,11 +48,11 @@
                             <i class="icon-badge fa-fw"></i> <span class="hide-menu"> Grades </span>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a class="waves-effect  <?= strpos(uri_string(),'clearance') ? 'active' : null ?>" href="<?= site_url('faculty/clearance') ?>" aria-expanded="false">
                             <i class="fa fa-file fa-fw"></i> <span class="hide-menu"> Clearance </span>
                         </a>
-                    </li>
+                    </li> -->
                 <?php endif ?>
 
                 <?php if(session('user_type') == 'student'): ?>
@@ -71,11 +71,11 @@
                             <i class="icon-badge fa-fw"></i> <span class="hide-menu"> Grades </span>
                         </a>
                     </li>
-                    <li>
+                    <!-- <li>
                         <a class="waves-effect  <?= strpos(uri_string(),'clearance') ? 'active' : null ?>" href="<?= site_url('student/clearance') ?>" aria-expanded="false">
                             <i class="fa fa-file fa-fw"></i> <span class="hide-menu"> Clearance </span>
                         </a>
-                    </li>
+                    </li> -->
                 <?php endif ?>
                 
             </ul>

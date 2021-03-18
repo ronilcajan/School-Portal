@@ -28,7 +28,7 @@ class Faculty extends BaseController
 		$subject = new SubjectModel();
 
 		$data['subjects'] = $subject->where('status',1)->findAll();
-
+		$data['random_pass'] = $this->randomPassword();
  		$data['title'] = "Create Faculty";
 		return view('admin/faculty/create_faculty',$data);
 	}
@@ -60,7 +60,7 @@ class Faculty extends BaseController
 				'firstname' => 'required',
 				'lastname' => 'required',
 				'gender' => 'required',
-				'birthdate' => 'required',
+				'birthdate' => 'required|validateFacultyBirthyear[birthdate]',
 				'phone' => 'required',
 				'street' => 'required',
 				'city' => 'required',
@@ -70,7 +70,10 @@ class Faculty extends BaseController
 			$errors = [
 				'email' => [
 					'is_unique' => 'Email is already used, please enter a different email address!'
-					]
+				],
+				'birthdate' => [
+					'validateFacultyBirthyear' => 'Birth year is below 2000. Please select above that year!'
+				]
 				];
 
 			if (!$this->validate($rules,$errors)) {
@@ -136,18 +139,25 @@ class Faculty extends BaseController
 				'firstname' => 'required',
 				'lastname' => 'required',
 				'gender' => 'required',
-				'birthdate' => 'required',
+				'birthdate' => 'required|validateFacultyBirthyear[birthdate]',
 				'phone' => 'required',
 				'street' => 'required',
 				'city' => 'required',
 				'province' => 'required',
-				'postal' => 'required'
+				'postal' => 'required',
+				'status' => 'required',
 			];
 			$errors = [
 				'email' => [
 					'is_unique' => 'Email is already used, please enter a different email address!'
-					]
-				];
+				],
+				'status' => [
+                    'required' => "Please select faculty status.",
+                ],
+				'birthdate' => [
+					'validateFacultyBirthyear' => 'Faculty birthyear must below 2000!'
+				]
+			];
 
 			if (!$this->validate($rules,$errors)) {
 
@@ -168,6 +178,7 @@ class Faculty extends BaseController
 					'city' => $this->request->getVar('city'),
 					'province' => $this->request->getVar('province'),
 					'postal' => $this->request->getVar('postal'),
+					'status' => $this->request->getVar('status'),
 					'updated_at' => date('y-n-j G:i:s')
 				];
 				
@@ -269,6 +280,16 @@ class Faculty extends BaseController
 		return view('admin/faculty/faculty_profile',$data);
 	}
 
+	public function randomPassword() {
+		$alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+		$pass = array(); //remember to declare $pass as an array
+		$alphaLength = strlen($alphabet) - 1; //put the length -1 in cache
+		for ($i = 0; $i < 8; $i++) {
+			$n = rand(0, $alphaLength);
+			$pass[] = $alphabet[$n];
+		}
+		return implode($pass); //turn the array into a string
+	}
 	
 	//--------------------------------------------------------------------
 

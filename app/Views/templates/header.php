@@ -19,6 +19,8 @@
 <link href="<?= site_url() ?>/plugins/components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" rel="stylesheet" />
 <link href="<?= site_url() ?>/plugins/components/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
 <link href="<?= site_url() ?>/plugins/components/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css" />
 <!-- ===== Animation CSS ===== -->
     <link href="<?= site_url() ?>/plugins/components/css-chart/css-chart.css" rel="stylesheet">
 <link href="<?= site_url() ?>/assets/css/animate.css" rel="stylesheet">

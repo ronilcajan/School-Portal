@@ -54,7 +54,6 @@
                                     <th>Deadline</th>
                                     <th>Files</th>
                                     <th>Status</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <?php $db = db_connect(); ?>
@@ -72,13 +71,6 @@
                                             <?php $id=$row['actID']; $stats = $db->query("SELECT * FROM activity_status WHERE student_id=$user_id AND activity_id=$id"); 
                                             $status = $stats->getResultArray(); ?>
                                             <?= empty($status[0]['status']) ? 'To do' : '<span class="label label-info">'.ucwords($status[0]['status']).'</span>' ?>
-                                        </td>
-                                        <td>
-                                            <select class="custom-select" data-acc="<?= $row['actID'] ?>" onchange="activityStatus(this)">
-                                                <option disbled selected>Select</option>
-                                                <option value="done">Done</option>
-                                                <option value="undone">Not Done</option>
-                                            </select>
                                         </td>
                                     </tr>
                                 <?php $no++; endforeach ?>

@@ -21,4 +21,15 @@ class UserRules
     return password_verify($data['password'], $user['password']);
   }
 
+  public function validateFacultyBirthyear(string $str, string $fields, array $data){
+
+      $year = date('Y', strtotime($data['birthdate']));
+
+      if($year > 2000){
+        return false;
+      }else{
+        return true;
+      }
+  }
+
 }
