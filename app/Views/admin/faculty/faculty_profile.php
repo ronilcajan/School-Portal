@@ -58,7 +58,7 @@
         </div>
         <div class="col-md-8 col-xs-12">
             <div class="white-box">
-                <h3 class="box-title m-b-20">Faculty Students</h3>
+                <h3 class="box-title m-b-20">Students</h3>
                 <div class="table-responsive">
                     <table id="studentTable" class="display table-borderless" cellspacing="0" width="100%">
                         <thead>

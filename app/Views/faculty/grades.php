@@ -43,8 +43,8 @@
                             <td contenteditable='true' class="remarks" style="border:1px solid RGB(0, 187, 217, 0.5)"><?= empty($row['remarks']) ? null : $row['remarks'] ?></td>
                             <td><?= empty($row['status']) ? null : '<span class="label label-success">'.$row['status'].'</span>' ?></td>
                             <td>
-                                <select class="custom-select" id="grade-action" data-subject="<?= $row['subject_id'] ?>" data-grade="<?= $row['grade_id'] ?>">
-                                    <option value="">Select</option>
+                                <select class="custom-select" id="grade-action" data-grade="<?= $row['grade_id'] ?>" data-subs="<?= $row['subject_id'] ?>" data-student_id="<?= $row['id'] ?>">
+                                    <option value="" disable selected>Select</option>
                                     <option value="save">Save Grade</option>
                                     <?php if(floatval($row['grade_1'])): ?>
                                         <option value="student">Notify Student</option>

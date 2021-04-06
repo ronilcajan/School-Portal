@@ -322,19 +322,27 @@ class Faculty extends BaseController
 
 	public function grades()
 	{
-		$model = new StudentModel();
+		$model = new FacultyModel();
 		$id = session()->get('id');
 
 		$data['students'] = $model
 								->select('*, students.id as id, subjects.id as subject_id,grades.status as status, grades.id as grade_id')
-								->join('student_section','students.id=student_section.student_id')
-								->join('section','section.id=student_section.section_id')
-								->join('group_section','group_section.section_id=section.id')
-								->join('grades','group_section.subject_id=grades.subject_id')
+								// ->join('student_section','students.id=student_section.student_id')
+								// ->join('section','section.id=student_section.section_id')
+								// ->join('group_section','group_section.section_id=section.id')
+								// ->join('grades','group_section.subject_id=grades.subject_id','right')
+								// ->join('subjects','subjects.id=group_section.subject_id')
+								// ->join('faculty_section','faculty_section.group_section_id=group_section.id')
+								// ->where('faculty_section.faculty_id',$id)
+								->join('faculty_section','faculty_section.faculty_id=faculty.id')
+								->join('group_section','group_section.id=faculty_section.group_section_id')
+								->join('section','section.id=group_section.section_id')
 								->join('subjects','subjects.id=group_section.subject_id')
-								->join('faculty_section','faculty_section.group_section_id=group_section.id')
-								->where('faculty_section.faculty_id',$id)
-								->where('grades.faculty_id',$id)
+								->join('student_section','student_section.section_id=group_section.section_id')
+								->join('students','students.id=student_section.student_id')
+								->join('grades','group_section.subject_id=grades.subject_id')
+								->where('faculty.id',$id)
+								->groupBy('grades.id')
 								->findAll();
 								
 		$data['title'] = "Grades";
@@ -342,52 +350,26 @@ class Faculty extends BaseController
 	}
 
 	public function saveGrade(){
+
 		$validator = array('success' => false, 'msg' => array());
 		$model = new GradeModel();
 
-		$id = session()->get('id');
-		$student_id = $this->request->getVar('student_id');
-		$subject_id = $this->request->getVar('subject_id');
+		$id = $this->request->getVar('grade_id');
 
-		$check = $model->where('student_id', $student_id)
-						->where('subject_id', $subject_id)
-						->where('faculty_id', $id)
-						->find();
-		
-		if(sizeof($check) == 0){
-			$dtls = [
-				'student_id' => $student_id,
-				'subject_id' => $subject_id,
-				'faculty_id' => $id,
-				'grade_1' => $this->request->getVar('grade1'),
-				'grade_2' => $this->request->getVar('grade2'),
-				'grade_3' => $this->request->getVar('grade3'),
-				'grade_4' => $this->request->getVar('grade4'),
-				'remarks' => $this->request->getVar('remarks'),
-			];
+		$dtls = [
+			'id' => $id,
+			'grade_1' => $this->request->getVar('grade1'),
+			'grade_2' => $this->request->getVar('grade2'),
+			'grade_3' => $this->request->getVar('grade3'),
+			'grade_4' => $this->request->getVar('grade4'),
+			'remarks' => $this->request->getVar('remarks'),
+		];
 	
-			$insert = $model->save($dtls);
-		}else{
-			$dtls = [
-				'id' => $check[0]['id'],
-				'student_id' => $student_id,
-				'subject_id' => $subject_id,
-				'faculty_id' => $id,
-				'grade_1' => $this->request->getVar('grade1'),
-				'grade_2' => $this->request->getVar('grade2'),
-				'grade_3' => $this->request->getVar('grade3'),
-				'grade_4' => $this->request->getVar('grade4'),
-				'remarks' => $this->request->getVar('remarks'),
-			];
-	
-			$insert = $model->save($dtls);
-		}
+		$insert = $model->save($dtls);
 		
-		
-
 		if($insert){
 			$validator['success'] = true;
-			$validator['msg'] = 'Grade has been save!';
+			$validator['msg'] = $this->request->getVar('grade1');
 		}
 		echo json_encode($validator);
 	}
@@ -398,50 +380,52 @@ class Faculty extends BaseController
 		$faculty = new FacultyModel();
 		$student = new StudentModel();
 		$subject = new SubjectModel();
+
 		$id = session()->get('id');
 		$student_id =  $this->request->getVar('student_id');
 		$subject_id =  $this->request->getVar('subject_id');
 		$grade_id =  $this->request->getVar('grade_id');
 
 		$facultyData = $faculty->find($id);
-		$studentData = $student->where('student_id',$student_id)->find();
+		$studentData = $student->find($student_id);
 		$subjectData = $subject->find($subject_id);
 		$gradeData = $grade->find($grade_id);
 
 		$facultyEmail = $facultyData['email'];
 		$facultyName = ucwords($facultyData['firstname'].' '.$facultyData['lastname']);
-		$studentEmail = $studentData[0]['email'];
+		$studentEmail = $studentData['email'];
 		$subject = "Grade Notification for ".$subjectData['subject_code'].' '.$subjectData['subject'];
 		
-		$grade1 = $this->request->getVar('grade1');
-		$grade2 = $this->request->getVar('grade2');
-		$grade3 = $this->request->getVar('grade3');
-		$grade4 = $this->request->getVar('grade4');
-		$remarks = $this->request->getVar('remarks');
+		$grade1 = $gradeData['grade_1'];
+		$grade2 = $gradeData['grade_2'];
+		$grade3 = $gradeData['grade_3'];
+		$grade4 = $gradeData['grade_4'];
+		$remarks = $gradeData['remarks'];
 
 		if(!empty($grade1)){
-			$grade1 = "1st Grading: ". $this->request->getVar('grade1');
+			$grade1 = "1st Grading: ". $gradeData['grade_1'];
 		}
 		if(!empty($grade2)){
-			$grade2 = ", 2nd Grading: ". $this->request->getVar('grade2');
+			$grade2 = ", 2nd Grading: ". $gradeData['grade_2'];
 		}
 		if(!empty($grade3)){
-			$grade3 = ", 3rd Grading: ". $this->request->getVar('grade3');
+			$grade3 = ", 3rd Grading: ". $gradeData['grade_3'];
 		}
 		if(!empty($grade4)){
-			$grade4 = ", 4th Grading: ". $this->request->getVar('grade4');
+			$grade4 = ", 4th Grading: ". $gradeData['grade_4'];
 		}
 		if(!empty($grade4)){
-			$remarks = ", Remarks: ". $this->request->getVar('remarks');
+			$remarks = ", Remarks: ". $gradeData['remarks'];
 		}
 
-		$message = "Hi ". ucwords($studentData[0]['firstname'].' '.$studentData[0]['lastname']).", this is a notification of your grade for ". $grade1.$grade2.$grade3.$grade4.$remarks.".";
-		$messagetext = $subjectData['subject'].' Grade for '.$grade1.$grade2.$grade3.$grade4.$remarks.".";
+		$message = "Hi ". ucwords($studentData['firstname'].' '.$studentData['lastname']).", this is a notification of your grade for ". $grade1.$grade2.$grade3.$grade4.$remarks.".";
+		// $messagetext = $subjectData['subject'].' Grade for '.$grade1.$grade2.$grade3.$grade4.$remarks.".";
 		
 		$sendMail = $this->sendEmail($facultyEmail,$facultyName,$studentEmail,$subject,$message);
-		$sendText = $this->itexmo($studentData[0]['phone'],$messagetext);
 
-		if($sendText || $sendMail){
+		// $sendText = $this->itexmo($studentData[0]['phone'],$messagetext);
+
+		if($sendMail){
 			$validator['success'] = true;
 			$validator['msg'] = 'Grade notification has been sent!';
 		}
@@ -452,46 +436,58 @@ class Faculty extends BaseController
 
 	public function notifyParents(){
 		$validator = array('success' => false, 'msg' => array());
+		$grade = new GradeModel();
 		$family = new FamilyModel();
 		$student = new StudentModel();
 		$subject = new SubjectModel();
-		$id_num =  $this->request->getVar('student_id');
-		$subject_id =  $this->request->getVar('subject_id');
+		$faculty = new FacultyModel();
 
-		$studentData = $student->where('student_id',$id_num)->find();
-		$id = $studentData[0]['id'];
-		$student_id = $student->find($id);
-		$familyData = $family->where('student_id',$student_id['id'])->find();
+		$id = session()->get('id');
+		$student_id =  $this->request->getVar('student_id');
+		$subject_id =  $this->request->getVar('subject_id');
+		$grade_id =  $this->request->getVar('grade_id');
+
+		$familyData = $family->where('student_id',$student_id)->find();
 		$subjectData = $subject->find($subject_id);
-		
-		$grade1 = $this->request->getVar('grade1');
-		$grade2 = $this->request->getVar('grade2');
-		$grade3 = $this->request->getVar('grade3');
-		$grade4 = $this->request->getVar('grade4');
-		$remarks = $this->request->getVar('remarks');
+		$gradeData = $grade->find($grade_id);
+		$studentData = $student->find($student_id);
+		$facultyData = $faculty->find($id);
+
+		$facultyEmail = $facultyData['email'];
+		$facultyName = ucwords($facultyData['firstname'].' '.$facultyData['lastname']);
+
+		$grade1 = $gradeData['grade_1'];
+		$grade2 = $gradeData['grade_2'];
+		$grade3 = $gradeData['grade_3'];
+		$grade4 = $gradeData['grade_4'];
+		$remarks = $gradeData['remarks'];
 
 		if(!empty($grade1)){
-			$grade1 = "1st Grading: ". $this->request->getVar('grade1');
+			$grade1 = "1st Grading: ". $gradeData['grade_1'];
 		}
 		if(!empty($grade2)){
-			$grade2 = ", 2nd Grading: ". $this->request->getVar('grade2');
+			$grade2 = ", 2nd Grading: ". $gradeData['grade_2'];
 		}
 		if(!empty($grade3)){
-			$grade3 = ", 3rd Grading: ". $this->request->getVar('grade3');
+			$grade3 = ", 3rd Grading: ". $gradeData['grade_3'];
 		}
 		if(!empty($grade4)){
-			$grade4 = ", 4th Grading: ". $this->request->getVar('grade4');
+			$grade4 = ", 4th Grading: ". $gradeData['grade_4'];
 		}
 		if(!empty($grade4)){
-			$remarks = ", Remarks: ". $this->request->getVar('remarks');
+			$remarks = ", Remarks: ". $gradeData['remarks'];
 		}
 
-		$messagetext = $subjectData['subject'].' Grade for '.$grade1.$grade2.$grade3.$grade4.".";
+		// $messagetext = $subjectData['subject'].' Grades are '.$grade1.$grade2.$grade3.$grade4.".";
 
-		$sendText = $this->itexmo($familyData[0]['m_phone'],$messagetext);
-		$sendText1 = $this->itexmo($familyData[0]['f_phone'],$messagetext);
+		$message = "Hi ". ucwords($familyData[0]['f_name']).", this is a grade notification for this subject : ".$grade1.$grade2.$grade3.$grade4.$remarks.".";
+		
+		$sendMail = $this->sendEmail($facultyEmail,$facultyName,$familyData[0]['f_email'],$subject,$message);
 
-		if($sendText || $sendText1){
+		// $sendText = $this->itexmo($familyData[0]['m_phone'],$messagetext);
+		// $sendText1 = $this->itexmo($familyData[0]['f_phone'],$messagetext);
+
+		if($sendMail){
 			$validator['success'] = true;
 			$validator['msg'] = 'Grade notification has been sent!';
 		}

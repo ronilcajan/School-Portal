@@ -112,7 +112,7 @@
                 </div>
             </div>
             <div class="white-box">
-                <h3 class="box-title m-b-20">Student Subjects</h3>
+                <h3 class="box-title m-b-20">Subjects</h3>
                 <div class="table-responsive">
                     <table id="subsTable" class="display table-borderless" cellspacing="0" width="100%">
                         <thead>

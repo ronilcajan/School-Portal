@@ -95,12 +95,14 @@ class Student extends BaseController
 	{
 		$model = new StudentModel();
 		$section = new SectionModel();
-		$id = session()->get('id_number');
+		$id = session()->get('id');
 
 		$data['grades'] = $model
-								->join('grades','students.student_ID=grades.student_id')
+								->join('grades','students.id=grades.student_id')
 								->join('subjects','subjects.id=grades.subject_id')
-								->where('students.student_ID',$id)
+								->join('group_section','group_section.subject_id=subjects.id')
+								->join('section','group_section.section_id=section.id')
+								->where('grades.student_id',$id)
 								->findAll();
 
 		$data['school_year'] = $section->select('school_year')->findAll();

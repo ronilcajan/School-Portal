@@ -172,12 +172,26 @@ class Student extends BaseController
 						'user_type' => 'student'
 					];
 
+
 					$db = db_connect();
 					$studentsection = $db->table('student_section');
 					$studentsection->insert($section);
 
 					$login = $db->table('login_portal');
 					$login->insert($login_dtls);
+
+					$subject = $db->table('group_section')->getWhere(['section_id' => $this->request->getVar('section_id')]);
+
+					foreach ($subject->getResult() as $row)
+					{
+						$subData = [
+							'student_id' => $student_id,
+							'subject_id' => $row->subject_id
+						];
+
+						$grade = $db->table('grades');
+						$grade->insert($subData);
+					}
 
 					$this->session->setFlashdata('success', 'Student has been created!');
 					return redirect()->to(previous_url());

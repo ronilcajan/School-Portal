@@ -13,7 +13,7 @@ class StudentFilter implements FilterInterface
         $user = session()->get('user_type');
         // Do something here
         if($url !== $user){
-            return redirect()->to('/');
+            return redirect()->back()->withInput()->with('error', 'Not allowed!');
         }
 
     }

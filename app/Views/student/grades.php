@@ -24,13 +24,14 @@
             </select>
         </div>
         </div>
+        
         <div class="table-responsive">
             <table id="studentTable" class="display table-borderless" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th>#</th>
                         <th>Subject</th>
-                        <th>Teacher</th>
+                        <th>School Year</th>
                         <th>Grading 1</th>
                         <th>Grading 2</th>
                         <th>Grading 3</th>
@@ -42,8 +43,8 @@
                 <?php $no=1; foreach($grades as $row): ?>
                     <tr>
                         <td><?= $no ?></td>
-                        <td><?= $row['subject_code'] ?></td>
                         <td><?= $row['subject'] ?></td>
+                        <td><?= $row['school_year'] ?></td>
                         <td><?= $row['grade_1'] > 0 ? $row['grade_1'] : null ?></td>
                         <td><?= $row['grade_2'] > 0 ? $row['grade_2'] : null ?></td>
                         <td><?= $row['grade_3'] > 0 ? $row['grade_3'] : null ?></td>
