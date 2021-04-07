@@ -28,6 +28,9 @@ $(document).ready(function(){
     $("#gradeTable").DataTable({
         responsive: true
     } );
+
+    
+
     $("#act_table").DataTable({
         responsive: true
     } );
@@ -39,7 +42,7 @@ $(document).ready(function(){
             "orderable": false
         }]
     });
-    $("#studentTable").DataTable({
+  var oTable = $("#studentTable").DataTable({
         responsive: true,
         "order": [],
         'columnDefs': [{
@@ -47,6 +50,11 @@ $(document).ready(function(){
             "orderable": false
         }]
     });
+
+    $('#school_year').on('change', function() {
+        var textSelected = $(this).val();
+        oTable.columns(2).search(textSelected).draw(); // note columns(0) here
+      });
 
     $("#checkAll").click(function () {
         $("#user_table input:checkbox").not(this).prop("checked", this.checked);

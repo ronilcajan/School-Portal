@@ -478,18 +478,20 @@ class Faculty extends BaseController
 			$remarks = ", Remarks: ". $gradeData['remarks'];
 		}
 
-		// $messagetext = $subjectData['subject'].' Grades are '.$grade1.$grade2.$grade3.$grade4.".";
+		$to = $familyData[0]['f_email'];
 
-		$message = "Hi ". ucwords($familyData[0]['f_name']).", this is a grade notification for this subject : ".$grade1.$grade2.$grade3.$grade4.$remarks.".";
+		$subject = ucwords($studentData['firstname'].' '.$studentData['lastname'])."- Grade Notification for ".$subjectData['subject_code'].' '.$subjectData['subject'];
+
+		$message = "Hi ". ucwords($familyData[0]['f_name']).", this is a grade notification for his/her subject : ".$grade1.$grade2.$grade3.$grade4.$remarks.".";
 		
-		$sendMail = $this->sendEmail($facultyEmail,$facultyName,$familyData[0]['f_email'],$subject,$message);
+		$sendMail = $this->sendEmail($facultyEmail, $facultyName, $to ,$subject, $message);
 
 		// $sendText = $this->itexmo($familyData[0]['m_phone'],$messagetext);
 		// $sendText1 = $this->itexmo($familyData[0]['f_phone'],$messagetext);
 
 		if($sendMail){
 			$validator['success'] = true;
-			$validator['msg'] = 'Grade notification has been sent!';
+			$validator['msg'] = 'Email Notification sent';
 		}
 		echo json_encode($validator);
 

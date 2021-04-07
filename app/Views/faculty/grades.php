@@ -11,7 +11,7 @@
         <i class="icon-bulb fa-fw"></i> Table is editable. You can enter students grade and save it!
     </div>
     <div class="white-box">
-    <h3 class="box-title m-b-20">Studen Grade</h3>
+    <h3 class="box-title m-b-20">Student Grade</h3>
         <div class="table-responsive">
             <table id="gradeTable" class="display table-borderless" cellspacing="0" width="100%">
                 <thead>
