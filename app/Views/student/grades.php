@@ -16,12 +16,11 @@
             <h3 class="box-title m-b-20">My Grades</h3>
         </div>
         <div class="col-sm-6">
-            <select class="custom-select" id="school_year" name="school_year">
-                <option selected>Sort the list by School Year</option>
+            <select class="custom-select m-b-10" id="school_year" name="school_year">
+                <option selected disabled>School Year</option>
                 <?php foreach($school_year as $row): ?>
                     <option value="<?= $row['school_year'] ?>"><?= $row['school_year'] ?></option>
                 <?php endforeach ?>
-                <option value="2019-2020">2019-2020</option>
             </select>
         </div>
         </div>
