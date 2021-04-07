@@ -10,7 +10,7 @@
                     <img src="<?= site_url() ?>/plugins/images/logo.png" alt="home" />
                 </b>
                 <span>
-                    <img src="<?= site_url() ?>/plugins/images/logo-text.png" alt="homepage" class="dark-logo" />
+                    OGM System
                 </span>
             </a>
         </div>
