@@ -9,6 +9,10 @@ use App\Models\GradeModel;
 use App\Models\SubjectModel;
 use App\Models\ClearanceModel;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 class Faculty extends BaseController
 {
 	public function index()
@@ -369,7 +373,7 @@ class Faculty extends BaseController
 		
 		if($insert){
 			$validator['success'] = true;
-			$validator['msg'] = $this->request->getVar('grade1');
+			$validator['msg'] = 'Grade has been save!';
 		}
 		echo json_encode($validator);
 	}
@@ -497,22 +501,57 @@ class Faculty extends BaseController
 
 	}
 
-	function sendEmail($from,$fromName,$to,$subject,$message){
-		$email = \Config\Services::email();
-		$email->setFrom($from, $fromName);
-		$email->setTo($to);
-		$email->setSubject($subject);
-		$email->setMessage($message);
-		$send = $email->send();
-		if ($send) 
-		{
-            return true;
-        } 
-		else 
-		{
-            $data = $email->printDebugger(['headers']);
-            return print_r($data);
-        }
+	// function sendEmail($from,$fromName,$to,$subject,$message){
+	// 	$email = \Config\Services::email();
+	// 	$email->setFrom($from, $fromName);
+	// 	$email->setTo($to);
+	// 	$email->setSubject($subject);
+	// 	$email->setMessage($message);
+	// 	$send = $email->send();
+	// 	if ($send) 
+	// 	{
+    //         return true;
+    //     } 
+	// 	else 
+	// 	{
+    //         $data = $email->printDebugger(['headers']);
+    //         return print_r($data);
+    //     }
+	// }
+
+	function sendEmail($from, $fromName, $to, $subject, $message){
+		$mail = new PHPMailer(true);
+
+		try {
+			//Server settings
+			$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+			$mail->isSMTP();                                            //Send using SMTP
+			$mail->Host       = 'smtp.googlemail.com';                     //Set the SMTP server to send through
+			$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+			$mail->Username   = 'omgsystem00@gmail.com';                     //SMTP username
+			$mail->Password   = 'KAGEbunshin1';                               //SMTP password
+			$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         //Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+			$mail->Port       = 587;                                    //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+
+			//Recipients
+			$mail->setFrom($from,  $fromName);
+			$mail->addAddress($to);     //Add a recipient
+
+			//Content
+			$mail->isHTML(true);                                  //Set email format to HTML
+			$mail->Subject = $subject;
+			$mail->Body    = $message;
+
+			$send = $mail->send();
+
+			if ($send) 
+			{
+				return true;
+			} 
+			
+		} catch (Exception $e) {
+			echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+		}
 	}
 
 	function itexmo($number,$message){

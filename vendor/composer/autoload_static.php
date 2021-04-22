@@ -34,6 +34,7 @@ class ComposerStaticInitd3de1d6cb40457105e19376ee9917edf
         array (
             'Psr\\Log\\' => 8,
             'Prophecy\\' => 9,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'M' => 
         array (
@@ -89,6 +90,10 @@ class ComposerStaticInitd3de1d6cb40457105e19376ee9917edf
         'Prophecy\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'Myth\\Auth\\' => 
         array (

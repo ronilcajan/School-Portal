@@ -19,14 +19,12 @@ $(document).on('change','#grade-action', function(){
                 },
                 dataType: "json",
                 success: function(response) {
-                    if(response.success === true){
-                        console.log(response);
-                        $('p#message').text(response.msg);
-                        $("#mssge").show();
-                        setTimeout(function(){
-                            window.location.reload(1);
-                         }, 3000);
-                    }
+                    console.log(response);
+                    $('p#message').text(response.msg);
+                    $("#mssge").show();
+                    setTimeout(function(){
+                        window.location.reload(1);
+                        }, 3000);
                 }
             });
         }
