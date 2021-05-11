@@ -30,7 +30,7 @@
             </div>
             <div class="col-sm-3">
                 <select class="form-control" id="section_">
-                    <option disabled selected>Select Level</option>
+                    <option disabled selected>Select Section</option>
                     <?php foreach($grade_level as $row): ?>
                     <option value="<?= ucwords($row['section_name']) ?>"><?= ucwords($row['section_name']) ?></option>
                     <?php endforeach ?>

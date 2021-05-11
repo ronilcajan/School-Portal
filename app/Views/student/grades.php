@@ -36,6 +36,7 @@
                         <th>Grading 2</th>
                         <th>Grading 3</th>
                         <th>Grading 4</th>
+                        <th>Average</th>
                         <th>Remarks</th>
                     </tr>
                 </thead>
@@ -49,6 +50,7 @@
                         <td><?= $row['grade_2'] > 0 ? $row['grade_2'] : null ?></td>
                         <td><?= $row['grade_3'] > 0 ? $row['grade_3'] : null ?></td>
                         <td><?= $row['grade_4'] > 0 ? $row['grade_4'] : null ?></td>
+                        <td><?= $row['average'] ?></td>
                         <td><?= $row['remarks'] ?></td>
                     </tr>
                 <?php $no++; endforeach ?>
