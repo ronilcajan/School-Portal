@@ -87,24 +87,6 @@ class Dashboard extends BaseController
 		return view('admin/activity',$data);
 	}
 
-	public function grades()
-	{
-		$model = new StudentModel();
-
-		$data['students'] = $model
-								->select('*, students.id as id, subjects.id as subject_id')
-								->join('student_section','students.id=student_section.student_id')
-								->join('section','section.id=student_section.section_id')
-								->join('group_section','group_section.section_id=section.id')
-								->join('grades','group_section.subject_id=grades.subject_id')
-								->join('subjects','subjects.id=group_section.subject_id')
-								->join('faculty_section','faculty_section.group_section_id=group_section.id')
-								->findAll();
-								
-		$data['title'] = "All Student Grades";
-		return view('admin/grades',$data);
-	}
-
 	//--------------------------------------------------------------------
 
 }

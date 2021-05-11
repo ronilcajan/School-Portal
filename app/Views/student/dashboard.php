@@ -38,19 +38,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="col-md-4">
-                <div class="white-box ecom-stat-widget">
-                    <div class="row">
-                        <div class="col-xs-6">
-                            <span class="text-blue font-light"><?= count($clearance) ?> </span>
-                            <p class="font-12">Clearance</p>
-                        </div>
-                        <div class="col-xs-6">
-                            <span class="icoleaf bg-danger text-white"><i class="mdi mdi-checkbox-marked-circle-outline"></i></span>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             
         </div>
         <div class="row">

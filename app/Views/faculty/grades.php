@@ -17,15 +17,15 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>ID Number</th>
+                        <th>ID</th>
                         <th>Name</th>
                         <th>Section</th>
                         <th>1st Grading</th>
                         <th>2nd Grading</th>
                         <th>3rd Grading</th>
                         <th>4th Grading</th>
+                        <th>Average</th>
                         <th>Remarks</th>
-                        <th>Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -40,17 +40,28 @@
                             <td contenteditable='true' class="grade2" style="border:1px solid RGB(0, 187, 217, 0.5);"><?= floatval($row['grade_2']) ? $row['grade_2'] : null ?></td>
                             <td contenteditable='true' class="grade3" style="border:1px solid RGB(0, 187, 217, 0.5)"><?= floatval($row['grade_3']) ? $row['grade_3'] : null ?></td>
                             <td contenteditable='true' class="grade4" style="border:1px solid RGB(0, 187, 217, 0.5)"><?= floatval($row['grade_4']) ? $row['grade_4'] : null ?></td>
-                            <td contenteditable='true' class="remarks" style="border:1px solid RGB(0, 187, 217, 0.5)"><?= empty($row['remarks']) ? null : $row['remarks'] ?></td>
-                            <td><?= empty($row['status']) ? null : '<span class="label label-success">'.$row['status'].'</span>' ?></td>
+                            <td class="average"><?= empty($row['average']) ? null : $row['average'] ?></td>
+                            <td class="remarks"><?= empty($row['remarks']) ? null : $row['remarks'] ?></td>
                             <td>
-                                <select class="custom-select" id="grade-action" data-grade="<?= $row['grade_id'] ?>" data-subs="<?= $row['subject_id'] ?>" data-student_id="<?= $row['id'] ?>">
+                                <button type="button" class="btn btn-success btn-circle" id="save_grade" data-grade="<?= $row['grade_id'] ?>">
+                                    <i class="icon-check"></i>
+                                </button>  
+                                <div class="btn-group dropup">
+                                    <button aria-expanded="false" data-toggle="dropdown" class="btn btn-primary dropdown-toggle waves-effect waves-light" type="button"> 
+                                    <i class="fa fa-envelope-o m-r-5"></i> <span class="caret"></span></button>
+                                    <ul role="menu" class="dropdown-menu">
+                                        <li><a href="javascript:void(0)" id="notif_student" data-grade="<?= $row['grade_id'] ?>" data-subs="<?= $row['subject_id'] ?>" data-student_id="<?= $row['id'] ?>">Notify Student</a></li>
+                                        <li><a href="javascript:void(0)" id="notif_parents" data-grade="<?= $row['grade_id'] ?>" data-subs="<?= $row['subject_id'] ?>" data-student_id="<?= $row['id'] ?>">Notify Parents</a></li>
+                                    </ul>
+                                </div>
+                                <!-- <select class="custom-select" id="grade-action" data-grade="<?= $row['grade_id'] ?>" data-subs="<?= $row['subject_id'] ?>" data-student_id="<?= $row['id'] ?>">
                                     <option value="" disable selected>Select</option>
                                     <option value="save">Save Grade</option>
                                     <?php if(floatval($row['grade_1'])): ?>
                                         <option value="student">Notify Student</option>
                                         <option value="parents">Notify Parents</option>
                                     <?php endif ?>
-                                </select>
+                                </select> -->
                                
                             </td>
                         </tr>

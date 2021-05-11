@@ -18,6 +18,7 @@ class Student extends BaseController
 								->join('student_section','students.id=student_section.student_id')
 								->join('section','section.id=student_section.section_id')
 								->findAll();
+								
 		$data['active'] = $model->where('status', 1)->findAll();
 		$data['inactive'] = $model->where('status', 0)->findAll();
 
@@ -180,7 +181,7 @@ class Student extends BaseController
 					$login = $db->table('login_portal');
 					$login->insert($login_dtls);
 
-					$subject = $db->table('group_section')->getWhere(['section_id' => $this->request->getVar('section_id')]);
+					$subject = $db->table('section_subjects')->getWhere(['section_id' => $this->request->getVar('section_id')]);
 
 					foreach ($subject->getResult() as $row)
 					{

@@ -17,7 +17,7 @@
                     </div>
                     <div class="form-group">
                         <label for="description" class="control-label">Description:</label>
-                        <textarea class="form-control" name="description" required=""></textarea>
+                        <textarea class="form-control" name="description"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -48,7 +48,7 @@
                     </div>
                     <div class="form-group">
                         <label for="description" class="control-label">Description:</label>
-                        <textarea class="form-control" name="description" id="description" required=""></textarea>
+                        <textarea class="form-control" name="description" id="description"></textarea>
                     </div>
                     <div class="form-group m-b-30">
                         <div class="col-md-6 p-l-0 active">

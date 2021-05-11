@@ -25,7 +25,6 @@ class Subject extends BaseController
 			$rules = [
 				'subject_code' => 'is_unique[subjects.subject_code]|required|max_length[255]',
 				'subject' => 'required|max_length[255]',
-				'description' => 'required|max_length[255]',
 			];
 			$errors = [
 				'subject_code' => [
@@ -35,9 +34,6 @@ class Subject extends BaseController
 				'subject' => [
 					'required' => 'Subject name is required!'
 				],
-				'description' => [
-					'required' => 'Subject description is required!'
-				]
 			];
             
 			if (!$this->validate($rules,$errors)) {
@@ -49,7 +45,7 @@ class Subject extends BaseController
 				$dtls = [
 					'subject_code' => $this->request->getVar('subject_code'),
                     'subject' => $this->request->getVar('subject'),
-                    'description' => $this->request->getVar('description'),
+					'description' => $this->request->getVar('description'),
 				];
 
 				$subject = new SubjectModel();
@@ -76,8 +72,7 @@ class Subject extends BaseController
 
 			$rules = [
 				'subject_code' => 'is_unique[subjects.subject_code,id,'.$id.']|required|max_length[255]',
-				'subject' => 'required|max_length[255]',
-				'description' => 'required|max_length[255]',
+				'subject' => 'required|max_length[255]'
 			];
 			$errors = [
 				'subject_code' => [
@@ -86,9 +81,6 @@ class Subject extends BaseController
 				],
 				'subject' => [
 					'required' => 'Subject name is required!'
-				],
-				'description' => [
-					'required' => 'Subject description is required!'
 				]
 			];
             
@@ -141,7 +133,7 @@ class Subject extends BaseController
 	{	
 		$model = new SubjectModel();
 		if($id) {
-			$delete = $model->delete($id);
+			$delete = $model->delete($id,true);
 			if($delete){
 				$this->session->setFlashdata('error', 'Subject has been deleted!');
 				return redirect()->to(previous_url());

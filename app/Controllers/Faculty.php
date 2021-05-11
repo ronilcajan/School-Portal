@@ -24,32 +24,30 @@ class Faculty extends BaseController
 	public function dashboard()
 	{
 		$model = new StudentModel();
+		$subject = new SubjectModel();
 		$activity = new ActivityModel();
 		$id = session()->get('id');
 		$db = db_connect();
 
 		$data['count_student'] = $model
-								->join('student_section','students.id=student_section.student_id')
-								->join('section','section.id=student_section.section_id')
-								->join('group_section','group_section.section_id=section.id')
-								->join('faculty_section','faculty_section.group_section_id=group_section.id')
-								->where('faculty_section.faculty_id',$id)
-								->countAll();
-		
-		$data['students'] = $model
 								->select('*, students.id as id')
 								->join('student_section','students.id=student_section.student_id')
 								->join('section','section.id=student_section.section_id')
-								->join('group_section','group_section.section_id=section.id')
-								->join('faculty_section','faculty_section.group_section_id=group_section.id')
+								->join('faculty_section','faculty_section.section_id=section.id')
 								->where('faculty_section.faculty_id',$id)
-								->findAll();
+								->countAll();
+
+		$data['subject'] = $subject
+								->select('*')
+								->join('faculty_section','subjects.id=faculty_section.subject_id')
+								->where('faculty_section.faculty_id',$id)
+								->find();
+
 		$data['inactiveStudents'] = $model
 								->select('*, students.id as id')
 								->join('student_section','students.id=student_section.student_id')
 								->join('section','section.id=student_section.section_id')
-								->join('group_section','group_section.section_id=section.id')
-								->join('faculty_section','faculty_section.group_section_id=group_section.id')
+								->join('faculty_section','faculty_section.section_id=section.id')
 								->where('faculty_section.faculty_id',$id)
 								->whereNotIn('students.status',[1])
 								->findAll();						
@@ -61,9 +59,17 @@ class Faculty extends BaseController
 								->select('*, students.id as id')
 								->join('student_section','students.id=student_section.student_id')
 								->join('section','section.id=student_section.section_id')
-								->join('group_section','group_section.section_id=section.id')
-								->join('faculty_section','faculty_section.group_section_id=group_section.id')
+								->join('faculty_section','faculty_section.section_id=section.id')
 								->where('faculty_section.faculty_id',$id)
+								->findAll();
+
+		$data['grade_level'] = $model
+								->select('section_year, section_name')
+								->join('student_section','students.id=student_section.student_id')
+								->join('section','section.id=student_section.section_id')
+								->join('faculty_section','faculty_section.section_id=section.id')
+								->where('faculty_section.faculty_id',$id)
+								->distinct()
 								->findAll();
 								
 
@@ -80,178 +86,21 @@ class Faculty extends BaseController
 								->select('*, students.id as id')
 								->join('student_section','students.id=student_section.student_id')
 								->join('section','section.id=student_section.section_id')
-								->join('group_section','group_section.section_id=section.id')
-								->join('faculty_section','faculty_section.group_section_id=group_section.id')
+								->join('faculty_section','faculty_section.section_id=section.id')
 								->where('faculty_section.faculty_id',$id)
+								->findAll();
+
+		$data['grade_level'] = $model
+								->select('section_year, section_name')
+								->join('student_section','students.id=student_section.student_id')
+								->join('section','section.id=student_section.section_id')
+								->join('faculty_section','faculty_section.section_id=section.id')
+								->where('faculty_section.faculty_id',$id)
+								->distinct()
 								->findAll();
 
 		$data['title'] = "Students";
 		return view('faculty/student',$data);
-	}
-
-	public function clearance()
-	{
-		$model = new ClearanceModel();
-        $student = new StudentModel();
-		$id = session()->get('id');                          
-
-		$data['clearance'] = $model
-                                ->select('*, clearance.id as id, clearance.status as status, students.id as studID')
-                                ->join('students','clearance.student_id=students.id')
-								->where('clearance.faculty_id',$id)
-                                ->findAll();
-
-		$data['students'] = $student
-								->select('*, students.id as id')
-								->join('student_section','students.id=student_section.student_id')
-								->join('section','section.id=student_section.section_id')
-								->join('group_section','group_section.section_id=section.id')
-								->join('faculty_section','faculty_section.group_section_id=group_section.id')
-								->where('faculty_section.faculty_id',$id)
-								->findAll();
-
-		$data['title'] = "Clearance";
-		return view('faculty/clearance',$data);
-	}
-
-	public function createClearance(){
-        $data = [];
-        
-        if($this->request->getMethod() == 'post'){
-
-            $rules = [
-				'student_id' => 'required',
-				'title' => 'required',
-				'description' => 'required',
-			];
-			$errors = [
-				'student_id' => [
-					'required' => 'Student name is required!',
-				],
-				'title' => [
-					'required' => 'Title is required!',
-					
-				],
-				'description' => [
-					'required' => 'Section description is required!',
-					
-				],
-			];
-
-			if (!$this->validate($rules,$errors)) {
-
-                $data['validation'] = $this->validator;
-
-            }else{
-                
-                $model = new ClearanceModel();
-				$id = session()->get('id');
-
-				$dtls = [
-					'student_id' => $this->request->getVar('student_id'),
-					'faculty_id' => $id,
-					'title' => $this->request->getVar('title'),
-					'description' => $this->request->getVar('description')
-				];
-				
-				$insert = $model->save($dtls);
-
-				if($insert){
-
-					$this->session->setFlashdata('success', 'Clearance has been created!');
-					return redirect()->to(previous_url());
-				}
-			}
-			$this->session->setFlashdata('error',  $data['validation']->listErrors());
-			return redirect()->to(previous_url());
-		}
-    }
-
-	public function updateClearance(){
-        $data = [];
-        
-        if($this->request->getMethod() == 'post'){
-
-            $rules = [
-				'student_id' => 'required',
-				'title' => 'required',
-				'description' => 'required',
-			];
-			$errors = [
-				'student_id' => [
-					'required' => 'Student name is required!',
-				],
-				'title' => [
-					'required' => 'Title is required!',
-					
-				],
-				'description' => [
-					'required' => 'Section description is required!',
-					
-				],
-			];
-
-			if (!$this->validate($rules,$errors)) {
-
-                $data['validation'] = $this->validator;
-
-            }else{
-                
-                $model = new ClearanceModel();
-               
-				$dtls = [
-                    'id' => $this->request->getVar('id'),
-					'student_id' => $this->request->getVar('student_id'),
-					'title' => $this->request->getVar('title'),
-					'description' => $this->request->getVar('description'),
-                    'status' => $this->request->getVar('status'),
-                    'updated_at' => date('y-n-j G:i:s')
-				];
-
-				$update = $model->save($dtls);
-
-				if($update){
-
-					$this->session->setFlashdata('success', 'Clearance has been updated!');
-					return redirect()->to(previous_url());
-				}
-			}
-			$this->session->setFlashdata('error',  $data['validation']->listErrors());
-			return redirect()->to(previous_url());
-		}
-    }
-
-	public function deleteClearance($id)
-	{	
-		$model = new ClearanceModel();
-		if($id) {
-			$delete = $model->delete($id);
-			if($delete){
-				$this->session->setFlashdata('error', 'Clearance has been deleted!');
-				return redirect()->to(previous_url());
-			}
-		}
-	}
-
-	public function clearanceDone()
-	{	
-		$validator = array('success' => false, 'msg' => array());
-
-		$id = $this->request->getVar('id');
-        $status = $this->request->getVar('status');
-
-		$model = new ClearanceModel();
-        $dtls = [
-            'id' => $id,
-            'status' => $status
-        ];
-
-		$secs = $model->save($dtls);
-
-		$validator['success'] = true;
-		$validator['msg'] = $secs;
-
-		echo json_encode($validator);
 	}
 
 	public function myStudents($id='')
@@ -265,8 +114,7 @@ class Faculty extends BaseController
 								->select('*, students.id as id')
 								->join('student_section','students.id=student_section.student_id')
 								->join('section','section.id=student_section.section_id')
-								->join('group_section','group_section.section_id=section.id')
-								->join('faculty_section','faculty_section.group_section_id=group_section.id')
+								->join('faculty_section','faculty_section.section_id=section.id')
 								->where('students.id',$id)
 								->find();
 
@@ -274,8 +122,8 @@ class Faculty extends BaseController
 
 		$data['subs'] = $model->join('student_section', 'students.id=student_section.student_id')
 								->join('section','student_section.section_id=section.id')
-								->join('group_section','section.id=group_section.section_id')
-								->join('subjects','group_section.subject_id=subjects.id')
+								->join('section_subjects','section.id=section_subjects.section_id')
+								->join('subjects','section_subjects.subject_id=subjects.id')
 								->where('students.id',$id)
 								->findAll();
 
@@ -313,11 +161,11 @@ class Faculty extends BaseController
 		$db = db_connect();
 
 		$data['activity'] = $model->where('faculty_id', $id)->findAll();
-		$data['section'] = $db->query("SELECT group_section.section_id as id, section_name, section_year 
-										FROM faculty_section 
-										JOIN group_section ON faculty_section.group_section_id=group_section.id 
-										JOIN section ON group_section.section_id=section.id
-										JOIN subjects ON group_section.subject_id=subjects.id
+		$data['section'] = $db->query("SELECT section.id as id, section_name, section_year 
+										FROM students 
+										JOIN student_section ON students.id=student_section.student_id
+										JOIN section ON section.id=student_section.section_id
+										JOIN faculty_section ON faculty_section.section_id=section.id
 										WHERE faculty_section.faculty_id=$id");
 
 		$data['title'] = "Create Activities";
@@ -331,22 +179,15 @@ class Faculty extends BaseController
 
 		$data['students'] = $model
 								->select('*, students.id as id, subjects.id as subject_id,grades.status as status, grades.id as grade_id')
-								// ->join('student_section','students.id=student_section.student_id')
-								// ->join('section','section.id=student_section.section_id')
-								// ->join('group_section','group_section.section_id=section.id')
-								// ->join('grades','group_section.subject_id=grades.subject_id','right')
-								// ->join('subjects','subjects.id=group_section.subject_id')
-								// ->join('faculty_section','faculty_section.group_section_id=group_section.id')
-								// ->where('faculty_section.faculty_id',$id)
 								->join('faculty_section','faculty_section.faculty_id=faculty.id')
-								->join('group_section','group_section.id=faculty_section.group_section_id')
-								->join('section','section.id=group_section.section_id')
-								->join('subjects','subjects.id=group_section.subject_id')
-								->join('student_section','student_section.section_id=group_section.section_id')
+								->join('section','section.id=faculty_section.section_id')
+								->join('subjects','subjects.id=faculty_section.subject_id')
+								->join('section_subjects','section_subjects.subject_id=subjects.id')
+								->join('student_section','student_section.section_id=section.id')
 								->join('students','students.id=student_section.student_id')
-								->join('grades','group_section.subject_id=grades.subject_id')
+								->join('grades','section_subjects.subject_id=grades.subject_id')
 								->where('faculty.id',$id)
-								->groupBy('grades.id')
+								->groupBy('students.id')
 								->findAll();
 								
 		$data['title'] = "Grades";
@@ -359,14 +200,41 @@ class Faculty extends BaseController
 		$model = new GradeModel();
 
 		$id = $this->request->getVar('grade_id');
+		$num = 0;
 
+		$grade1 = $this->request->getVar('grade1');
+		$grade2 = $this->request->getVar('grade2');
+		$grade3 = $this->request->getVar('grade3');
+		$grade4 = $this->request->getVar('grade4');
+
+		if(!empty($grade1)){
+			$num++;
+		}
+		if(!empty($grade2)){
+			$num++;
+		}
+		if(!empty($grade3)){
+			$num++;
+		}
+		if(!empty($grade4)){
+			$num++;
+		}
+		$average = ((float)$grade1+(float)$grade2+(float)$grade3+(float)$grade4) / $num;
+
+		if($average >= 75){
+			$remarks = 'Passed';
+		}else{
+			$remarks = 'Failed';
+		}
+		
 		$dtls = [
 			'id' => $id,
-			'grade_1' => $this->request->getVar('grade1'),
-			'grade_2' => $this->request->getVar('grade2'),
-			'grade_3' => $this->request->getVar('grade3'),
-			'grade_4' => $this->request->getVar('grade4'),
-			'remarks' => $this->request->getVar('remarks'),
+			'grade_1' => empty($grade1) ? null : $grade1,
+			'grade_2' => empty($grade2) ? null : $grade2,
+			'grade_3' => empty($grade3) ? null : $grade3,
+			'grade_4' => empty($grade4) ? null : $grade4,
+			'average' => $average,
+			'remarks' => $remarks,
 		];
 	
 		$insert = $model->save($dtls);
@@ -374,6 +242,9 @@ class Faculty extends BaseController
 		if($insert){
 			$validator['success'] = true;
 			$validator['msg'] = 'Grade has been save!';
+		}else{
+			$validator['success'] = false;
+			$validator['msg'] = 'Grade not save!';
 		}
 		echo json_encode($validator);
 	}
@@ -404,6 +275,7 @@ class Faculty extends BaseController
 		$grade2 = $gradeData['grade_2'];
 		$grade3 = $gradeData['grade_3'];
 		$grade4 = $gradeData['grade_4'];
+		$average = $gradeData['average'];
 		$remarks = $gradeData['remarks'];
 
 		if(!empty($grade1)){
@@ -418,11 +290,14 @@ class Faculty extends BaseController
 		if(!empty($grade4)){
 			$grade4 = ", 4th Grading: ". $gradeData['grade_4'];
 		}
+		if(!empty($average)){
+			$average = ", Average: ". $gradeData['average'];
+		}
 		if(!empty($grade4)){
 			$remarks = ", Remarks: ". $gradeData['remarks'];
 		}
 
-		$message = "Hi ". ucwords($studentData['firstname'].' '.$studentData['lastname']).", this is a notification of your grade for ". $grade1.$grade2.$grade3.$grade4.$remarks.".";
+		$message = "Hi ". ucwords($studentData['firstname'].' '.$studentData['lastname']).", this is a notification of your grade for". $grade1.$grade2.$grade3.$grade4.$average.$remarks.".";
 		// $messagetext = $subjectData['subject'].' Grade for '.$grade1.$grade2.$grade3.$grade4.$remarks.".";
 		
 		$sendMail = $this->sendEmail($facultyEmail,$facultyName,$studentEmail,$subject,$message);
@@ -431,7 +306,7 @@ class Faculty extends BaseController
 
 		if($sendMail){
 			$validator['success'] = true;
-			$validator['msg'] = 'Grade notification has been sent!';
+			$validator['msg'] = 'Student has been notified!';
 		}
 
 		echo json_encode($validator);
@@ -495,7 +370,7 @@ class Faculty extends BaseController
 
 		if($sendMail){
 			$validator['success'] = true;
-			$validator['msg'] = 'Email Notification sent';
+			$validator['msg'] = 'Parents has been notified!';
 		}
 		echo json_encode($validator);
 
@@ -524,7 +399,7 @@ class Faculty extends BaseController
 
 		try {
 			//Server settings
-			$mail->SMTPDebug = SMTP::DEBUG_SERVER;                      //Enable verbose debug output
+			$mail->SMTPDebug = 0;                      //Enable verbose debug output
 			$mail->isSMTP();                                            //Send using SMTP
 			$mail->Host       = 'smtp.googlemail.com';                     //Set the SMTP server to send through
 			$mail->SMTPAuth   = true;                                   //Enable SMTP authentication
@@ -821,30 +696,27 @@ class Faculty extends BaseController
 							FROM students 
 							JOIN student_section ON students.id=student_section.student_id
 							JOIN section ON section.id=student_section.section_id
-							JOIN group_section ON group_section.section_id=section.id
-							JOIN faculty_section ON faculty_section.group_section_id=group_section.id
+							JOIN faculty_section ON faculty_section.section_id=section.id
 							WHERE faculty_section.faculty_id=$id");
 		$male = $db->query("SELECT students.id as male
 							FROM students 
 							JOIN student_section ON students.id=student_section.student_id
 							JOIN section ON section.id=student_section.section_id
-							JOIN group_section ON group_section.section_id=section.id
-							JOIN faculty_section ON faculty_section.group_section_id=group_section.id
+							JOIN faculty_section ON faculty_section.section_id=section.id
 							WHERE students.gender='M' AND faculty_section.faculty_id=$id");
 		$female = $db->query("SELECT students.id as female
 							FROM students 
 							JOIN student_section ON students.id=student_section.student_id
 							JOIN section ON section.id=student_section.section_id
-							JOIN group_section ON group_section.section_id=section.id
-							JOIN faculty_section ON faculty_section.group_section_id=group_section.id
+							JOIN faculty_section ON faculty_section.section_id=section.id
 							WHERE students.gender='F' AND faculty_section.faculty_id=$id");
 
-		if($male || $female || $total){
-			$validator['success'] = true;
-			$validator['total'] = count($total->getResultArray());
-			$validator['male'] = count($male->getResultArray());
-			$validator['female'] = count($female->getResultArray());
-		}
+
+		$validator['success'] = true;
+		$validator['total'] = count($total->getResultArray());
+		$validator['male'] = count($male->getResultArray());
+		$validator['female'] = count($female->getResultArray());
+		
 		echo json_encode($validator);
 	}
 	//--------------------------------------------------------------------

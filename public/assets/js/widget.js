@@ -14,7 +14,7 @@ $(function() {
                 dataType: "json",
                 success: function(response) {
                     if(response.success === true){
-
+                        console.log(response);
                         Morris.Donut({
                             element: 'order-status-chart',
                             data: [{

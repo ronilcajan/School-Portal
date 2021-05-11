@@ -22,7 +22,7 @@
                 <div id="create-msg"></div>
             </div>
             <div class="white-box">
-                <h3 class="box-title m-b-20"><?= $title ?></h3>
+                <h3 class="box-title m-b-20">Student of <?= $title ?></h3>
                 <div class="table-responsive">
                     <table id="studentTable" class="display nowrap table-borderless" cellspacing="0" width="100%">
                         <thead>
@@ -58,6 +58,41 @@
                         <?php $i++; endforeach ?>
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="white-box">
+                <h3 class="box-title m-b-20">Subjects for <?= $title ?></h3>
+                <div class="table-responsive">
+                    <table id="myDatatables" class="display nowrap table-borderless" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Subject Code</th>
+                                <th>Subject Name</th>
+                                <th>Description</th>
+                                <th>Status</th>
+                                <th>Date Created</th>
+                                <th>Date Updated</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php $no=1; foreach($subjects as $row): ?>
+                            <tr>
+                                <td><?= $no ?></td>
+                                <td><?= $row['subject_code'] ?></td>
+                                <td><?= $row['subject'] ?></td>
+                                <td><?= $row['description'] ?></td>
+                                <td><?= $row['status'] == 1 ? '<span class="label label-success">Active</span>' : '<span class="label label-danger">Inactive</span>' ?></td>
+                                <td><i class="fa fa-clock-o"></i> <?= date('n/j/Y g:i A', strtotime($row['created_at'])) ?></td>
+                                <td><?= !empty($row['updated_at']) ? '<i class="fa fa-clock-o"></i> '. date('n/j/Y g:i A', strtotime($row['updated_at'])) :  null ?></td>
+                                <td>
+                                    <a href="#edit-modal" data-toggle="modal" data-id="<?= $row['id'] ?>" onclick="getSubject(this)" class="text-info"><small>Edit</small></a> | 
+                                    <a href="<?= base_url('admin/subject/delete/'.$row['id']) ?>" class="text-danger"><small>Delete</small></a>
+                                </td>
+                            </tr>
+                        <?php $no++; endforeach ?>
+                        </tbody>
                 </div>
             </div>
         </div>

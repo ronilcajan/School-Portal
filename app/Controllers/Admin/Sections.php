@@ -29,7 +29,7 @@ class Sections extends BaseController
             $rules = [
 				'name' => 'trim|required|is_unique[section.section_name]',
 				'year' => 'required',
-				'description' => 'required',
+				'school_year' => 'required',
 			];
 			$errors = [
 				'name' => [
@@ -40,8 +40,8 @@ class Sections extends BaseController
 					'required' => 'Section year is required!',
 					
 				],
-				'description' => [
-					'required' => 'Section description is required!',
+				'school_year' => [
+					'required' => 'School year is required!',
 					
 				],
 			];
@@ -56,6 +56,7 @@ class Sections extends BaseController
 				$dtls = [
 					'section_name' => $this->request->getVar('name'),
 					'section_year' => $this->request->getVar('year'),
+					'school_year' => $this->request->getVar('school_year'),
 					'description' => $this->request->getVar('description')
 				];
 				
@@ -71,7 +72,7 @@ class Sections extends BaseController
 					}
 
 					$db = db_connect();
-					$table = $db->table('group_section');
+					$table = $db->table('section_subjects');
 					$table->insertBatch($group);
 
 					$this->session->setFlashdata('success', 'Grade & Section has been created!');
@@ -93,7 +94,7 @@ class Sections extends BaseController
             $rules = [
 				'name' => 'trim|required|is_unique[section.section_name,id,'.$id.']',
 				'year' => 'required',
-				'description' => 'required',
+				'school_year' => 'required',
 				'subjects' => 'required',
 			];
 			$errors = [
@@ -105,8 +106,8 @@ class Sections extends BaseController
 					'required' => 'Section year is required!',
 					
 				],
-				'description' => [
-					'required' => 'Section description is required!',
+				'school_year' => [
+					'required' => 'School year is required!',
 					
 				],
 				'subjects' => [
@@ -126,6 +127,7 @@ class Sections extends BaseController
 					'id' => $id,
 					'section_name' => $this->request->getVar('name'),
 					'section_year' => $this->request->getVar('year'),
+					'school_year' => $this->request->getVar('school_year'),
 					'description' => $this->request->getVar('description'),
 					'status' => $this->request->getVar('status'),
 					'updated_at' => date('y-n-j G:i:s')
@@ -141,7 +143,7 @@ class Sections extends BaseController
 					}
 
 					$db = db_connect();
-					$table = $db->table('group_section');
+					$table = $db->table('section_subjects');
 					$table->delete(['section_id' => $id]);
 
 					$table->insertBatch($group);
@@ -181,8 +183,8 @@ class Sections extends BaseController
 		$section = $section->find($id);
 
 		$subs = $sub
-				->join('group_section','group_section.subject_id=subjects.id')
-				->where('group_section.section_id',$id)->findAll();;
+				->join('section_subjects','section_subjects.subject_id=subjects.id')
+				->where('section_subjects.section_id',$id)->findAll();;
 
 		$validator['success'] = true;
 		$validator['msg'] = $section;
@@ -192,6 +194,7 @@ class Sections extends BaseController
 	}
 	public function specificSection($id,$section){
 		$model = new StudentModel();
+		$subject = new SubjectModel();
 
 		$data['students'] = $model
 								->select('*,students.status as status, students.updated_at as updated_at, students.id as id')
@@ -200,7 +203,13 @@ class Sections extends BaseController
 								->where('section.id',$id)
 								->findAll();
 
-		$data['title'] = "Students of Grade ".$section;
+		$data['subjects'] = $subject
+								->select('*,subjects.status as status, subjects.updated_at as updated_at, subjects.id as id')
+								->join('section_subjects','subjects.id=section_subjects.subject_id')
+								->where('section_subjects.section_id',$id)
+								->findAll();
+
+		$data['title'] = "Grade ".$section;
 		return view('admin/sections/student_section',$data);
 	}
 	//--------------------------------------------------------------------

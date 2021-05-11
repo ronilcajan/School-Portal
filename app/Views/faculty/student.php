@@ -16,9 +16,29 @@
     <?php endif; ?>
     <?= $this->include('templates/breadcrumbs') ?>
     <div class="white-box">
-        <h3 class="box-title m-b-20">My Students</h3>
+        <div class="row">
+            <div class="col-sm-6">
+                <h4 class="box-title">Students</h4>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control" id="grade_level">
+                    <option disabled selected>Select Level</option>
+                    <?php foreach($grade_level as $row): ?>
+                    <option value="Grade <?= $row['section_year'] ?>">Grade <?= $row['section_year'] ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <select class="form-control" id="section_">
+                    <option disabled selected>Select Level</option>
+                    <?php foreach($grade_level as $row): ?>
+                    <option value="<?= ucwords($row['section_name']) ?>"><?= ucwords($row['section_name']) ?></option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+        </div>
         <div class="table-responsive">
-            <table id="studentTable" class="display table-borderless" cellspacing="0" width="100%">
+            <table id="facDTable" class="display table-borderless" cellspacing="0" width="100%">
                 <thead>
                     <tr>
                         <th class="text-center">No</th>
@@ -27,7 +47,9 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Section</th>
+                        <th>Year Level</th>
                         <th>Action</th>
+                        <th>School Year</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,7 +60,9 @@
                             <td><a href="<?= site_url('faculty/myStudent/').$row['id'] ?>"><?= !empty($row['img']) ? '<img class="img-fluid rounded m-r-10" width="40" src="'.site_url('uploads/').$row['img'].'" />' : null ?><?= ucwords($row['firstname'].' '.$row['lastname']) ?></a></td>
                             <td><a href="mailto:"'.<?= $row['email'] ?>.'"><?= $row['email'] ?></a></td>
                             <td><a href="tel:"'.<?= $row['phone'] ?>.'"><?= $row['phone'] ?></a></td>
-                            <td>Grade <?= $row['section_year'].' - '.$row['section_name'] ?></td>
+                            <td>Grade <?= $row['section_year'] ?></td>
+                            <td><?= $row['section_name'] ?></td>
+                            <td><?= ucwords($row['school_year']) ?></td>
                             <td><a href="<?= site_url('faculty/myStudent/').$row['id'] ?>" class="text-info"><small>View</small></a></td>
                         </tr>
                     <?php $no++; endforeach ?>

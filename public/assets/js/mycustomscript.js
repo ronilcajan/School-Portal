@@ -27,7 +27,7 @@ function getSubject(that){  // get the subject when selecting an attorney from c
     });
 }
 
-function getSection(that){  // get the sections when selecting an attorney from create modal clients
+function getSection(that){  // get the sections when selecting an  from create modal clients
     var id = $(that).attr('data-id');
     $.ajax({
         type: "POST",
@@ -40,6 +40,7 @@ function getSection(that){  // get the sections when selecting an attorney from 
             console.log(response);
             $('#section').val(response.msg.section_name);
             $('#grade').val(response.msg.section_year);
+            $('#school_year').val(response.msg.school_year);
             $('#description').val(response.msg.description);
             $('#id').val(response.msg.id);
             var data = [];
@@ -58,12 +59,13 @@ function selectSection(that){  // get the sections when selecting an attorney fr
         url: BASE_URL+"/admin/selectSection",
         data: {
             id:id
-        },
+        }, 
         dataType: "json",
         success: function(response) {
             console.log(response);
+            $('#group_section_id').html('');
             $.each(response.msg, function( index, value ) {
-                $('#group_section_id').html('<option value="'+value.id+'">Grade '+value.section_year+' - '+value.section_name+'</option>');
+                $('#group_section_id').append('<option value="'+value.id+'">Grade '+value.section_year+' - '+value.section_name+'</option>');
             });
         }
     });

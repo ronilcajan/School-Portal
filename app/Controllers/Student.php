@@ -4,7 +4,6 @@ use App\Controllers\BaseController;
 use App\Models\StudentModel;
 use App\Models\ActivityModel;
 use App\Models\FacultyModel;
-use App\Models\ClearanceModel;
 use App\Models\SectionModel;
 
 class Student extends BaseController
@@ -20,7 +19,6 @@ class Student extends BaseController
 	{
 		$model = new StudentModel();
 		$activity = new ActivityModel();
-		$clearance = new ClearanceModel();
 		$id = session()->get('id');
 		$db = db_connect();
 		
@@ -34,27 +32,20 @@ class Student extends BaseController
 		
 		$data['activity'] = $activity->select('*, activity.description as desc,activity_group.id as actID')
 								->join('activity_group', 'activity.id=activity_group.activity_id')
-								->join('section','activity_group.section_id=section.id')
-								->join('student_section', 'section.id=student_section.section_id')
+								->join('student_section', 'activity_group.section_id=student_section.section_id')
 								->join('students', 'students.id=student_section.student_id')
-								->join('faculty', 'faculty.id=activity_group.faculty_id')
-								->join('faculty_section', 'faculty.id=faculty_section.faculty_id')
-								->join('group_section', 'faculty_section.group_section_id=group_section.id')
-								->join('subjects', 'group_section.subject_id=subjects.id')
+								->join('section', 'student_section.section_id=section.id')
+								->join('section_subjects', 'section_subjects.section_id=section.id')
+								->join('subjects', 'subjects.id=section_subjects.subject_id')
 								->where('students.id',$id)
 								->findAll();
 
-		$data['subs'] = $model->select('*,group_section.id as group_id')
+		$data['subs'] = $model->select('*,section_subjects.id as group_id')
 								->join('student_section', 'students.id=student_section.student_id')
 								->join('section','student_section.section_id=section.id')
-								->join('group_section','section.id=group_section.section_id')
-								->join('subjects','group_section.subject_id=subjects.id')
+								->join('section_subjects','section.id=section_subjects.section_id')
+								->join('subjects','section_subjects.subject_id=subjects.id')
 								->where('students.id',$id)
-								->findAll();
-
-		$data['clearance'] = $clearance
-								->where('student_id',$id)
-								->whereNotIn('status',['Done'])
 								->findAll();
 
 		$data['title'] = "My Dashboard";
@@ -67,23 +58,23 @@ class Student extends BaseController
 		$activity = new ActivityModel();
 		$id = session()->get('id');
 
-		$data['subs'] = $model->select('*,group_section.id as group_id')
+		$data['subs'] = $model->select('*,faculty.id as faculty')
 								->join('student_section', 'students.id=student_section.student_id')
 								->join('section','student_section.section_id=section.id')
-								->join('group_section','section.id=group_section.section_id')
-								->join('subjects','group_section.subject_id=subjects.id')
+								->join('section_subjects','section.id=section_subjects.section_id')
+								->join('subjects','section_subjects.subject_id=subjects.id')
+								->join('faculty_section','faculty_section.subject_id=subjects.id')
+								->join('faculty','faculty_section.faculty_id=faculty.id')
 								->where('students.id',$id)
 								->findAll();
 		
 		$data['activity'] = $activity->select('*, activity.description as desc,activity_group.id as actID')
 								->join('activity_group', 'activity.id=activity_group.activity_id')
-								->join('section','activity_group.section_id=section.id')
-								->join('student_section', 'section.id=student_section.section_id')
+								->join('student_section', 'activity_group.section_id=student_section.section_id')
 								->join('students', 'students.id=student_section.student_id')
-								->join('faculty', 'faculty.id=activity_group.faculty_id')
-								->join('faculty_section', 'faculty.id=faculty_section.faculty_id')
-								->join('group_section', 'faculty_section.group_section_id=group_section.id')
-								->join('subjects', 'group_section.subject_id=subjects.id')
+								->join('section', 'student_section.section_id=section.id')
+								->join('section_subjects', 'section_subjects.section_id=section.id')
+								->join('subjects', 'subjects.id=section_subjects.subject_id')
 								->where('students.id',$id)
 								->findAll();
 
@@ -100,8 +91,8 @@ class Student extends BaseController
 		$data['grades'] = $model
 								->join('grades','students.id=grades.student_id')
 								->join('subjects','subjects.id=grades.subject_id')
-								->join('group_section','group_section.subject_id=subjects.id')
-								->join('section','group_section.section_id=section.id')
+								->join('section_subjects','section_subjects.subject_id=subjects.id')
+								->join('section','section_subjects.section_id=section.id')
 								->where('grades.student_id',$id)
 								->findAll();
 
@@ -110,38 +101,6 @@ class Student extends BaseController
 		$data['title'] = "My Grades";
 		return view('student/grades',$data);
 	}
-
-	public function clearance()
-	{
-		$model = new ClearanceModel();
-		$id = session()->get('id');
-
-		$data['clearance'] = $model
-								->where('student_id',$id)
-								->where('status','Active')
-								->orWhere('status','Complied')
-								->findAll();
-
-		$data['title'] = "My Clearance";
-		return view('student/clearance',$data);
-	}
-	public function compliedClearance($id)
-	{
-		$model = new ClearanceModel();
-
-		$dtls = [
-			'id' => $id,
-			'status' => 'Complied'
-		];
-
-		$update = $model->save($dtls);
-
-		if($update){
-			$this->session->setFlashdata('success', 'Clearance status has been changed!');
-			return redirect()->to(previous_url());
-		}
-	}
-	
 
 	public function changeActiStatus(){
 		$validator = array('success' => false, 'msg' => array());
@@ -169,20 +128,18 @@ class Student extends BaseController
 	public function getFaculty(){
 		$validator = array('success' => false, 'name' => array(),'phone' => array(),'email' => array(),'img' => array());
 		$id = session()->get('id');
-		$group_id = $this->request->getVar('id');
+		$faculty = $this->request->getVar('id');
 
 		$model = new FacultyModel();
 		
-		$query = $model->join('faculty_section', 'faculty_section.faculty_id=faculty.id')
-						->join('group_section', 'group_section.id=faculty_section.group_section_id')
-						->where('group_section.id', $group_id)->find();
+		$query = $model->find($faculty);
 		
 		if($query){
 			$validator['success'] = true;
-			$validator['name'] = $query[0]['firstname'].' '.$query[0]['lastname'];
-			$validator['phone'] = $query[0]['phone'];
-			$validator['email'] = $query[0]['email'];
-			$validator['img'] = $query[0]['img'];
+			$validator['name'] = $query['firstname'].' '.$query['lastname'];
+			$validator['phone'] = $query['phone'];
+			$validator['email'] = $query['email'];
+			$validator['img'] = $query['img'];
 
 		}
 		echo json_encode($validator);

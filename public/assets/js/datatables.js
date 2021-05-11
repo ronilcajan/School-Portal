@@ -42,7 +42,11 @@ $(document).ready(function(){
             "orderable": false
         }]
     });
-  var oTable = $("#studentTable").DataTable({
+    var fTable = $("#facDTable").DataTable({
+        responsive: true
+    } );
+
+    var oTable = $("#studentTable").DataTable({
         responsive: true,
         "order": [],
         'columnDefs': [{
@@ -54,7 +58,16 @@ $(document).ready(function(){
     $('#school_year').on('change', function() {
         var textSelected = $(this).val();
         oTable.columns(2).search(textSelected).draw(); // note columns(0) here
-      });
+    });
+
+    $('#grade_level').on('change', function() {
+        var textSelected = $(this).val();
+        fTable.columns(5).search(textSelected).draw(); // note columns(0) here
+    });
+    $('#section_').on('change', function() {
+        var textSelected = $(this).val();
+        fTable.columns(6).search(textSelected).draw(); // note columns(0) here
+    });
 
     $("#checkAll").click(function () {
         $("#user_table input:checkbox").not(this).prop("checked", this.checked);

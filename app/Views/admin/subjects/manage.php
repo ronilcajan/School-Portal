@@ -89,6 +89,7 @@
                                 <th>Action</th>
                             </tr>
                         </thead>
+                        <tbody>
                         <?php $no=1; foreach($subjects as $row): ?>
                             <tr>
                                 <td><?= $no ?></td>
@@ -104,7 +105,6 @@
                                 </td>
                             </tr>
                         <?php $no++; endforeach ?>
-                        <tbody>
                         </tbody>
                     </table>
                 </div>

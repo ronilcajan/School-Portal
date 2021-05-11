@@ -56,6 +56,8 @@ class Faculty extends BaseController
         if($this->request->getMethod() == 'post'){
 
             $rules = [
+				'subject_id' => 'required',
+				'group_section_id' => 'required',
 				'email' => 'required|is_unique[faculty.email]|valid_email',
 				'firstname' => 'required',
 				'lastname' => 'required',
@@ -73,8 +75,11 @@ class Faculty extends BaseController
 				],
 				'birthdate' => [
 					'validateFacultyBirthyear' => 'Birth year is below 2000. Please select above that year!'
+				],
+				'group_section_id' => [
+					'required' => 'Section is required'
 				]
-				];
+			];
 
 			if (!$this->validate($rules,$errors)) {
 
@@ -102,9 +107,10 @@ class Faculty extends BaseController
 				if($insert){
 
 					$section = $this->request->getVar('group_section_id');
+					$subject_id = $this->request->getVar('subject_id');
 					$group = array();
-					foreach($section as $key=>$val){
-						  $group[] = array('faculty_id'=>$faculty_id, 'group_section_id'=>$val);
+					foreach($section as $val){
+						  $group[] = array('faculty_id'=>$faculty_id,'subject_id'=>$subject_id, 'section_id'=>$val);
 					}
 					$login_dtls = [
 						'email' => $this->request->getVar('email'),
@@ -232,9 +238,9 @@ class Faculty extends BaseController
 		$section = new SectionModel();
 
 		$secs = $section
-				->select('group_section.id as id, section_name, section_year')
-				->join('group_section','group_section.section_id=section.id')
-				->where('group_section.subject_id',$id)->findAll();
+				->select('section.id as id, section_name, section_year')
+				->join('section_subjects','section_subjects.section_id=section.id')
+				->where('section_subjects.subject_id',$id)->findAll();
 
 		$validator['success'] = true;
 		$validator['msg'] = $secs;
@@ -261,8 +267,9 @@ class Faculty extends BaseController
 		$db = db_connect();
 
 		$section = $db->query("SELECT section_name, section_year, subject_code,`subject` FROM faculty_section 
-												JOIN group_section ON faculty_section.group_section_id=group_section.id JOIN section ON group_section.section_id=section.id
-												JOIN subjects ON group_section.subject_id=subjects.id
+												JOIN section_subjects ON faculty_section.section_id=section_subjects.id 
+												JOIN section ON section_subjects.section_id=section.id
+												JOIN subjects ON section_subjects.subject_id=subjects.id
 												WHERE faculty_section.faculty_id=$id");
 		$data['section'] = $section->getResultArray();										
 		$data['faculty'] = $model->find($id);
@@ -271,8 +278,7 @@ class Faculty extends BaseController
 								->select('*, students.id as id')
 								->join('student_section','students.id=student_section.student_id')
 								->join('section','section.id=student_section.section_id')
-								->join('group_section','group_section.section_id=section.id')
-								->join('faculty_section','faculty_section.group_section_id=group_section.id')
+								->join('faculty_section','faculty_section.section_id=section.id')
 								->where('faculty_section.faculty_id',$id)
 								->findAll();
 

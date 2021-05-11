@@ -37,14 +37,14 @@
                         <?php
                             $date2=date('Y', strtotime('+1 Years'));
                             for($i=date('Y'); $i<$date2+5;$i++){
-                                echo '<option>'.$i.'-'.($i+1).'</option>';
+                                echo '<option value="'.$i.'-'.($i+1).'">'.$i.'-'.($i+1).'</option>';
                             }
                         ?>
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="description" class="control-label">Description:</label>
-                        <textarea class="form-control" name="description" required=""></textarea>
+                        <textarea class="form-control" name="description"></textarea>
                     </div>
                     <div class="form-group">
                         <select class="select2 m-b-10 select2-multiple" multiple="multiple" data-placeholder="Choose Subjects for this Section" name="subjects[]">
@@ -97,11 +97,23 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="description" class="control-label">Description:</label>
-                        <textarea class="form-control" name="description" id="description" required=""></textarea>
+                        <label class="control-label">School Year</label>
+                        <select class="form-control" name="school_year" id="school_year">
+                            <option selected disabled>Select School Year</option>
+                        <?php
+                            $date2=date('Y', strtotime('+1 Years'));
+                            for($i=date('Y'); $i<$date2+5;$i++){
+                                echo '<option value="'.$i.'-'.($i+1).'">'.$i.'-'.($i+1).'</option>';
+                            }
+                        ?>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <select class="select2 m-b-10 select2-multiple" id="subject_id" multiple="multiple" data-placeholder="Choose" name="subjects[]">
+                        <label for="description" class="control-label">Description:</label>
+                        <textarea class="form-control" name="description" id="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <select class="select2 m-b-10 select2-multiple" multiple="multiple" data-placeholder="Choose Subjects" name="subjects[]" id="subject_id">
                             <optgroup label="Subjects">
                                 <?php foreach($subjects as $row): ?>
                                     <option value="<?= $row['id'] ?>"><?= $row['subject_code'].' - '.$row['subject'] ?></option>

@@ -11,7 +11,20 @@
     <?php endif; ?>
     <?= $this->include('templates/breadcrumbs') ?>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="white-box ecom-stat-widget">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <span class="text-blue font-light"><?= $subject[0]['subject'] ?></i></span>
+                        <p class="font-12">Subject Code: <?= $subject[0]['subject_code'] ?></p>
+                    </div>
+                    <div class="col-xs-6">
+                        <span class="icoleaf bg-info text-white"><i class="mdi mdi-book"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="white-box ecom-stat-widget">
                 <div class="row">
                     <div class="col-xs-6">
@@ -24,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="white-box ecom-stat-widget">
                 <div class="row">
                     <div class="col-xs-6">
@@ -37,7 +50,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="white-box ecom-stat-widget">
                 <div class="row">
                     <div class="col-xs-6">
@@ -56,19 +69,37 @@
             <div class="white-box user-table">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h4 class="box-title">Student Activities</h4>
+                        <h4 class="box-title">Students</h4>
+                    </div>
+                    <div class="col-sm-3">
+                        <select class="form-control" id="grade_level">
+                            <option disabled selected>Select Level</option>
+                            <?php foreach($grade_level as $row): ?>
+                            <option value="Grade <?= $row['section_year'] ?>">Grade <?= $row['section_year'] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <select class="form-control" id="section_">
+                            <option disabled selected>Select Level</option>
+                            <?php foreach($grade_level as $row): ?>
+                            <option value="<?= ucwords($row['section_name']) ?>"><?= ucwords($row['section_name']) ?></option>
+                            <?php endforeach ?>
+                        </select>
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table id="actTable" class="display table-borderless" cellspacing="0" width="100%">
+                    <table id="facDTable" class="display table-borderless" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>No</th>
                                 <th>ID Number</th>
                                 <th>Name</th>
-                                <th>Section</th>
                                 <th>Email</th>
                                 <th>Phone</th>
+                                <th>Year Level</th>
+                                <th>Section</th>
+                                <th>School Year</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,9 +108,11 @@
                                 <td><?= $no ?></td>
                                 <td><?= $row['student_ID'] ?></td>
                                 <td><?= !empty($row['img']) ? '<img class="img-fluid rounded m-r-10" width="40" src="'.site_url('uploads/').$row['img'].'" />' : null ?><?= ucwords($row['firstname'].' '.$row['lastname']) ?></td>
-                                <td>Grade<?= ucwords($row['section_year'].' '.$row['section_name']) ?></td>
                                 <td><a href="mailto:<?= $row['email'] ?>"><?= $row['email'] ?></a></td>
                                 <td><a href="tel:<?= $row['phone'] ?>"?><?= $row['phone'] ?></a></td>
+                                <td>Grade <?= $row['section_year'] ?></td>
+                                <td><?= $row['section_name'] ?></td>
+                                <td><?= ucwords($row['school_year']) ?></td>
                             </tr>
                         <?php $no++; endforeach ?>
                         </tbody>

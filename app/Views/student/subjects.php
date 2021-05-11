@@ -19,7 +19,7 @@
             </div>
         </div>
        <?php foreach($subs as $row):?>
-        <a href="#faculty" data-toggle="modal" data-group="<?= $row['group_id'] ?>" onclick="getFaculty(this)">
+        <a href="#faculty" data-toggle="modal" data-group="<?= $row['faculty'] ?>" onclick="getFaculty(this)">
             <div class="white-box ecom-stat-widget">
                 <div class="row">
                     <div class="col-xs-6">
@@ -66,7 +66,13 @@
                                         <td><?= $row['desc'] ?></td>
                                         <td><?= $row['subject_code'].'-'.$row['subject'] ?></td>
                                         <td><?= $row['deadline'] ?></td>
-                                        <td class="text-center"><a class="text-danger" href="<?= site_url() ?>uploads/<?= $row['file'] ?>"><i class="fa fa-file"></i></a></td>
+                                        <td class="text-center">
+                                            <?php if(!empty($row['file'])): ?>
+                                            <a class="text-danger" href="<?= site_url() ?>uploads/<?= $row['file'] ?>">
+                                                <i class="fa fa-file"></i>
+                                            </a>
+                                            <?php endif ?>
+                                        </td>
                                         <td>
                                             <?php $id=$row['actID']; $stats = $db->query("SELECT * FROM activity_status WHERE student_id=$user_id AND activity_id=$id"); 
                                             $status = $stats->getResultArray(); ?>
